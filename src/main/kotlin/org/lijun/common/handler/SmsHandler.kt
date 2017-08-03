@@ -17,12 +17,27 @@
  * limitations under the License.
  */
 
-package org.lijun.common.exception
+package org.lijun.common.handler
 
 /**
- * 调用微信公众平台异常包装类
+ * 短信发送处理接口
  *
  * @author lijun
- * @constructor
  */
-class WechatException(var error: WechatErrorDetail) : RuntimeException()
+interface SmsHandler {
+
+    /**
+     * 发送短信
+     * @param mobile 手机号
+     * @param content 短信内容
+     * @return 短信接口返回的消息ID，短信接口无法回消息ID返回null
+     */
+    fun send(mobile: CharSequence, content: CharSequence): String?;
+
+    /**
+     * 获取短信消息签名，如【阿里巴巴】
+     * @return 短信消息签名
+     */
+    fun getSignature();
+
+}

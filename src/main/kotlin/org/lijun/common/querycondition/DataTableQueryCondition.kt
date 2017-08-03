@@ -17,12 +17,28 @@
  * limitations under the License.
  */
 
-package org.lijun.common.exception
+package org.lijun.common.querycondition
+
+import org.lijun.common.util.Constants
 
 /**
- * 调用微信公众平台异常包装类
+ * 针对jQuery.dataTables插件提交的查询条件进行封装
  *
  * @author lijun
  * @constructor
  */
-class WechatException(var error: WechatErrorDetail) : RuntimeException()
+open class DataTableQueryCondition : BaseQueryCondition() {
+
+    /**
+     * 绘制计数器
+     */
+    var draw: Long? = null
+
+    /**
+     * 第一条数据的起始位置
+     */
+    var start: Long = 0L
+
+    var length: Long = Constants.DEFAULT_PAGE_SIZE.toLong()
+
+}

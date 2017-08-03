@@ -20,6 +20,7 @@
 package org.lijun.common.exception
 
 import org.lijun.common.enums.WechatErrorType
+import org.lijun.common.util.Constants
 import java.io.Serializable
 
 /**
@@ -51,6 +52,19 @@ class WechatErrorDetail : Serializable {
         this.errorType = errorType
         this.errorCode = errorCode
         this.errorMsg = errorMsg
+    }
+
+    companion object {
+
+        /**
+         * 创建系统错误
+         * @param errorMsg 错误消息
+         * @return
+         */
+        fun createSystemError(errorMsg: String): WechatErrorDetail {
+            return WechatErrorDetail(WechatErrorType.SYSTEM_ERROR, Constants.STATUS_ERROR, errorMsg);
+        }
+
     }
 
 }
