@@ -68,7 +68,7 @@ class HttpResponseWrapper<T> : Serializable {
      */
     @Throws(ParseException::class, UnsupportedCharsetException::class)
     constructor(response: HttpResponse) {
-        headerGroup?.setHeaders(response.allHeaders)
+        headerGroup.setHeaders(response.allHeaders)
 
         statusLine = response.statusLine
 

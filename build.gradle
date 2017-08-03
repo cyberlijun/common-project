@@ -9,6 +9,7 @@ buildscript {
         springboot_version = '1.5.2.RELEASE'
         httpcomponents_version = '4.5.1'
         commons_io_version = '2.4'
+        emoji_java_version = '3.3.0'
     }
 
     repositories {
@@ -37,6 +38,7 @@ dependencies {
     compile "org.apache.httpcomponents:httpclient:$httpcomponents_version"
     compile "org.apache.httpcomponents:httpmime:$httpcomponents_version"
     compile "commons-io:commons-io:$commons_io_version"
+    compile "com.vdurmont:emoji-java:$emoji_java_version"
 }
 
 compileKotlin {
