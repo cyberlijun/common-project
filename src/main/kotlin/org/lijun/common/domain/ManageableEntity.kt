@@ -33,6 +33,8 @@ import javax.persistence.TemporalType
  * 受管理的实体模型，用于自动填入创建时间和最后修改时间
  *
  * @author lijun
+ * @property createDate 创建时间
+ * @property updateDate 最后修改时间
  * @constructor
  */
 @MappedSuperclass

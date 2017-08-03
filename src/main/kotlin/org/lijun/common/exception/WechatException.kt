@@ -23,6 +23,7 @@ package org.lijun.common.exception
  * 调用微信公众平台异常包装类
  *
  * @author lijun
+ * @property error 错误详情
  * @constructor
  */
 class WechatException(var error: WechatErrorDetail) : RuntimeException()

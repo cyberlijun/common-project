@@ -17,34 +17,26 @@
  * limitations under the License.
  */
 
-package org.lijun.common.querycondition
+package org.lijun.common.vo
 
-import org.lijun.common.util.Constants
+import org.apache.commons.lang3.StringUtils
+import java.io.Serializable
 
 /**
- * 针对jQuery.dataTables插件提交的查询条件进行封装
+ * 前台使用Ajax请求后台时返回的JSON数据
  *
  * @author lijun
- * @property draw 绘制计数器
- * @property start 第一条数据的起始位置
- * @property length 每页显示记录数
+ * @property status 响应状态
+ * @property message 响应消息
+ * @property data 响应数据
  * @constructor
  */
-open class DataTableQueryCondition : BaseQueryCondition() {
+data class JsonResult(var status: String?, var message: String?, var data: Any?) : Serializable {
 
-    /**
-     * 绘制计数器
-     */
-    var draw: Long? = null
+    constructor(status: String?) : this(status, StringUtils.EMPTY, null)
 
-    /**
-     * 第一条数据的起始位置
-     */
-    var start: Long = 0L
+    constructor(status: String?, message: String?) : this(status, message, null)
 
-    /**
-     * 每页显示记录数
-     */
-    var length: Long = Constants.DEFAULT_PAGE_SIZE.toLong()
+    constructor(status: String?, data: Any?) : this(status, StringUtils.EMPTY, data)
 
 }

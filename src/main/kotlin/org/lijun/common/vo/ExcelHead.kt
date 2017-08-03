@@ -17,34 +17,24 @@
  * limitations under the License.
  */
 
-package org.lijun.common.querycondition
-
-import org.lijun.common.util.Constants
+package org.lijun.common.vo
 
 /**
- * 针对jQuery.dataTables插件提交的查询条件进行封装
+ * Excel标题行
  *
  * @author lijun
- * @property draw 绘制计数器
- * @property start 第一条数据的起始位置
- * @property length 每页显示记录数
+ * @property title 标题
+ * @property order 标题顺序
+ * @property property 要访问对象的属性，支持嵌套属性
  * @constructor
  */
-open class DataTableQueryCondition : BaseQueryCondition() {
+data class ExcelHead(var title: String?, var order: Int = Int.MAX_VALUE, var property: String?) : Comparable<ExcelHead> {
 
     /**
-     * 绘制计数器
+     * Compares this object with the specified object for order. Returns zero if this object is equal
+     * to the specified [other] object, a negative number if it's less than [other], or a positive number
+     * if it's greater than [other].
      */
-    var draw: Long? = null
-
-    /**
-     * 第一条数据的起始位置
-     */
-    var start: Long = 0L
-
-    /**
-     * 每页显示记录数
-     */
-    var length: Long = Constants.DEFAULT_PAGE_SIZE.toLong()
+    override fun compareTo(other: ExcelHead): Int = this.order.compareTo(other.order)
 
 }

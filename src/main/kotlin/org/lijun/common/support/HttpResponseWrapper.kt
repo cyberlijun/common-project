@@ -33,6 +33,11 @@ import java.util.*
  *
  * @author lijun
  * @param T 响应包装的类型
+ * @property statusLine 响应状态
+ * @property headerGroup 响应头分组
+ * @property locale 地区
+ * @property contentType 响应类型
+ * @property content 响应内容
  * @constructor
  */
 class HttpResponseWrapper<T> : Serializable {

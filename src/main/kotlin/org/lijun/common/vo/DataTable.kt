@@ -19,7 +19,6 @@
 
 package org.lijun.common.vo
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.apache.commons.lang3.StringUtils
 import java.io.Serializable
 
@@ -28,6 +27,11 @@ import java.io.Serializable
  *
  * @author lijun
  * @param T DataTable包装的类型
+ * @property draw 绘制计数器
+ * @property recordsTotal 总记录数
+ * @property recordsFiltered 过滤后的记录数
+ * @property data 表中需要显示的数据
+ * @property error 出现错误时的友好提示
  * @constructor
  */
 class DataTable<T> : Serializable {
@@ -35,31 +39,26 @@ class DataTable<T> : Serializable {
     /**
      * 绘制计数器
      */
-    @JsonProperty
     var draw: Long? = null
 
     /**
      * 总记录数
      */
-    @JsonProperty
     var recordsTotal: Long? = null
 
     /**
      * 过滤后的记录数
      */
-    @JsonProperty
     var recordsFiltered: Long? = null
 
     /**
      * 表中需要显示的数据
      */
-    @JsonProperty
     var data: Collection<T>? = null
 
     /**
      * 出现错误时的友好提示
      */
-    @JsonProperty
     var error: String? = null
 
     constructor()

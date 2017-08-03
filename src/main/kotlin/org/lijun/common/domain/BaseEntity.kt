@@ -29,6 +29,7 @@ import javax.persistence.MappedSuperclass
  * 实体类基类，所有实体类均继承该类
  *
  * @author lijun
+ * @property id 主键
  * @constructor
  */
 @JsonAutoDetect(

@@ -17,34 +17,17 @@
  * limitations under the License.
  */
 
-package org.lijun.common.querycondition
+package org.lijun.common.vo
 
-import org.lijun.common.util.Constants
+import java.io.Serializable
 
 /**
- * 针对jQuery.dataTables插件提交的查询条件进行封装
+ * 手机端下拉刷新返回的对象
  *
  * @author lijun
- * @property draw 绘制计数器
- * @property start 第一条数据的起始位置
- * @property length 每页显示记录数
+ * @param T 包装的对象
+ * @property totalPage 总页数
+ * @property data 显示的数据
  * @constructor
  */
-open class DataTableQueryCondition : BaseQueryCondition() {
-
-    /**
-     * 绘制计数器
-     */
-    var draw: Long? = null
-
-    /**
-     * 第一条数据的起始位置
-     */
-    var start: Long = 0L
-
-    /**
-     * 每页显示记录数
-     */
-    var length: Long = Constants.DEFAULT_PAGE_SIZE.toLong()
-
-}
+data class PageList<T>(var totalPage: Long, var data: Collection<T>) : Serializable

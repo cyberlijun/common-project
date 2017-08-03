@@ -33,6 +33,7 @@ import java.io.IOException
  * 处理返回字符数据
  *
  * @author lijun
+ * @property charset 字符集
  * @constructor
  */
 class StringResponseHandler(val charset: String) : ResponseHandler<HttpResponseWrapper<String>> {

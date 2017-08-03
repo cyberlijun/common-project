@@ -33,6 +33,8 @@ import java.util.*
  * 查询条件基类
  *
  * @author lijun
+ * @property startDate 起始日期
+ * @property endDate 结束日期
  * @constructor
  */
 abstract class BaseQueryCondition : Serializable {

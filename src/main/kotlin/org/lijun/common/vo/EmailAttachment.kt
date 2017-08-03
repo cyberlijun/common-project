@@ -17,57 +17,43 @@
  * limitations under the License.
  */
 
-package org.lijun.common.exception
+package org.lijun.common.vo
 
-import org.lijun.common.enums.WechatErrorType
-import org.lijun.common.util.Constants
 import java.io.Serializable
+import javax.activation.DataSource
 
 /**
- * 微信异常错误详情
+ * 邮件附件
  *
  * @author lijun
- * @property errorType 错误类型
- * @property errorCode 错误代码
- * @property errorMsg 错误消息
+ * @property dataSource 附件数据源
+ * @property name 附件名称
+ * @property description 附件描述
  * @constructor
  */
-class WechatErrorDetail : Serializable {
+class EmailAttachment : Serializable {
 
     /**
-     * 错误类型
+     * 附件数据源
      */
-    var errorType: WechatErrorType? = null
+    var dataSource: DataSource? = null
 
     /**
-     * 错误代码
+     * 附件名称
      */
-    var errorCode: String? = null
+    var name: String? = null
 
     /**
-     * 错误消息
+     * 附件描述
      */
-    var errorMsg: String? = null
+    var description: String? = null
 
     constructor()
 
-    constructor(errorType: WechatErrorType, errorCode: String, errorMsg: String) {
-        this.errorType = errorType
-        this.errorCode = errorCode
-        this.errorMsg = errorMsg
-    }
-
-    companion object {
-
-        /**
-         * 创建系统错误
-         * @param errorMsg 错误消息
-         * @return
-         */
-        fun createSystemError(errorMsg: String): WechatErrorDetail {
-            return WechatErrorDetail(WechatErrorType.SYSTEM_ERROR, Constants.STATUS_ERROR, errorMsg);
-        }
-
+    constructor(dataSource: DataSource, name: String?, description: String?) {
+        this.dataSource = dataSource
+        this.name = name
+        this.description = description
     }
 
 }
