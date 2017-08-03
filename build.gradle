@@ -10,6 +10,9 @@ buildscript {
         httpcomponents_version = '4.5.1'
         commons_io_version = '2.4'
         emoji_java_version = '3.3.0'
+        jxl_version = '2.6.12'
+        commons_beanutils_version = '1.9.2'
+        ant_core_version = '1.9.7'
     }
 
     repositories {
@@ -39,6 +42,9 @@ dependencies {
     compile "org.apache.httpcomponents:httpmime:$httpcomponents_version"
     compile "commons-io:commons-io:$commons_io_version"
     compile "com.vdurmont:emoji-java:$emoji_java_version"
+    compile "net.sourceforge.jexcelapi:jxl:$jxl_version"
+    compile "commons-beanutils:commons-beanutils:$commons_beanutils_version"
+    compile "org.apache.ant:ant:$ant_core_version"
 }
 
 compileKotlin {
