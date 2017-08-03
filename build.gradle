@@ -8,6 +8,7 @@ buildscript {
         commons_lang3_version = '3.4'
         springboot_version = '1.5.2.RELEASE'
         httpcomponents_version = '4.5.1'
+        commons_io_version = '2.4'
     }
 
     repositories {
@@ -35,6 +36,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$springboot_version"
     compile "org.apache.httpcomponents:httpclient:$httpcomponents_version"
     compile "org.apache.httpcomponents:httpmime:$httpcomponents_version"
+    compile "commons-io:commons-io:$commons_io_version"
 }
 
 compileKotlin {
