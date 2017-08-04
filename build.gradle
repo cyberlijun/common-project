@@ -38,6 +38,7 @@ dependencies {
     compile "org.apache.commons:commons-lang3:$commons_lang3_version"
     compile "org.springframework.boot:spring-boot-starter-web:$springboot_version"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$springboot_version"
+    compile "org.springframework.boot:spring-boot-starter-mail:$springboot_version"
     compile "org.apache.httpcomponents:httpclient:$httpcomponents_version"
     compile "org.apache.httpcomponents:httpmime:$httpcomponents_version"
     compile "commons-io:commons-io:$commons_io_version"
