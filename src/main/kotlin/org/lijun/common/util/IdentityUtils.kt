@@ -292,9 +292,3 @@ object IdentityUtils {
     }
 
 }
-
-fun main(args: Array<String>) {
-    val identity: String = "120103198605077317"
-
-    println(IdentityUtils.validate(identity))
-}
