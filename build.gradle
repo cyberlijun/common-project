@@ -13,6 +13,8 @@ buildscript {
         jxl_version = '2.6.12'
         commons_beanutils_version = '1.9.2'
         ant_core_version = '1.9.7'
+        poi_version = '3.12'
+        zxing_version = '3.3.0'
     }
 
     repositories {
@@ -46,6 +48,10 @@ dependencies {
     compile "net.sourceforge.jexcelapi:jxl:$jxl_version"
     compile "commons-beanutils:commons-beanutils:$commons_beanutils_version"
     compile "org.apache.ant:ant:$ant_core_version"
+    compile "org.apache.poi:poi:$poi_version"
+    compile "org.apache.poi:poi-ooxml:$poi_version"
+    compile "com.google.zxing:core:$zxing_version"
+    compile "com.google.zxing:javase:$zxing_version"
 }
 
 compileKotlin {
