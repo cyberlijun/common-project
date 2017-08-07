@@ -1,11 +1,16 @@
 package org.lijun.common.util
 
+import org.apache.commons.beanutils.ConvertUtils
+import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.ClassUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateFormatUtils
 import java.lang.reflect.Method
 import java.util.*
 import java.util.UUID
+import org.apache.commons.lang3.StringUtils.isNoneBlank
+
+
 
 /**
  * 系统工具类
@@ -66,6 +71,27 @@ object SystemUtils {
         }
 
         return uuid.toString()
+    }
+
+    /**
+     * 连接Map键值对
+     * @param map
+     * @param separator
+     * @param ignoreKeys
+     */
+    @JvmStatic
+    fun joinKeyValue(map: Map<String, *>, separator: String, vararg ignoreKeys: String?): String {
+        var list: List<String> = listOf()
+
+        map.forEach { k, v ->
+            val value: String = ConvertUtils.convert(v)
+
+            if (StringUtils.isNotBlank(k) && !ArrayUtils.contains(ignoreKeys, k)) {
+                list += "$k=${if (StringUtils.isNoneBlank(value)) value else StringUtils.EMPTY}"
+            }
+        }
+
+        return StringUtils.join(list, separator)
     }
 
 }

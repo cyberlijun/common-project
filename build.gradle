@@ -15,6 +15,7 @@ buildscript {
         ant_core_version = '1.9.7'
         poi_version = '3.12'
         zxing_version = '3.3.0'
+        guava_version = '18.0'
     }
 
     repositories {
@@ -52,6 +53,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:$poi_version"
     compile "com.google.zxing:core:$zxing_version"
     compile "com.google.zxing:javase:$zxing_version"
+    compile "com.google.guava:guava:$guava_version"
 }
 
 compileKotlin {
