@@ -31,6 +31,7 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'maven'
 
 repositories {
     mavenLocal()
@@ -74,4 +75,12 @@ targetCompatibility = 1.8
 
 task wrapper(type: Wrapper) {
     gradleVersion = 4.0
+}
+
+def LOCAL_REPO_URL = "file:///usr/local/mvnrepository"
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: LOCAL_REPO_URL)
+    }
 }
