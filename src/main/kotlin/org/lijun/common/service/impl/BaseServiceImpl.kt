@@ -43,7 +43,7 @@ import java.io.Serializable
  * @author lijun
  * @constructor
  */
-abstract class BaseServiceImpl<T, ID : Serializable>(var repository: BaseRepository<T, ID>) : BaseService<T, ID> {
+abstract class BaseServiceImpl<T, ID : Serializable>(val repository: BaseRepository<T, ID>) : BaseService<T, ID> {
 
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
