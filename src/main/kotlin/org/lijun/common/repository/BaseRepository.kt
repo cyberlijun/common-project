@@ -30,7 +30,6 @@ import java.io.Serializable
  * @author lijun
  * @param T 包装的实体类
  * @param ID 主键
- * @constructor
  */
 @NoRepositoryBean
 interface BaseRepository<T, ID : Serializable> : JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
