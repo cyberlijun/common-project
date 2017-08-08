@@ -17,35 +17,24 @@
  * limitations under the License.
  */
 
-package org.lijun.common.wechat.context
+package org.lijun.common.wechat.message.response
+
+import com.thoughtworks.xstream.annotations.XStreamAlias
+import org.lijun.common.wechat.message.vo.Video
 
 /**
- * 微信JS API票据上下文
+ * 微信回复视频消息封装
  *
  * @author lijun
  * @constructor
  */
-object AccessToken {
+@XStreamAlias("xml")
+class VideoResponseMessage : ResponseMessage("video") {
 
     /**
-     * JS API返回的票据
+     * 视频
      */
-    @JvmStatic
-    private var ticket: String? = null
-
-    /**
-     * 设置票据
-     */
-    @JvmStatic
-    fun set(ticket: String) {
-        this.ticket = ticket
-    }
-
-    /**
-     * 获取票据
-     */
-    fun get(): String {
-        return this.ticket!!
-    }
+    @XStreamAlias("Video")
+    var video: Video? = null
 
 }

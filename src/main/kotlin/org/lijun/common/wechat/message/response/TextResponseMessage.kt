@@ -17,23 +17,23 @@
  * limitations under the License.
  */
 
-package org.lijun.common.wechat.message.vo
+package org.lijun.common.wechat.message.response
 
-import java.io.Serializable
 import com.thoughtworks.xstream.annotations.XStreamAlias
 
 /**
- * 微信响应图片
+ * 微信回复文本消息封装
  *
  * @author lijun
  * @constructor
  */
-class Image : Serializable {
+@XStreamAlias("xml")
+class TextResponseMessage : ResponseMessage("text") {
 
     /**
-     * 通过素材管理接口上传多媒体文件，得到的id
+     * 文本消息内容
      */
-    @XStreamAlias("MediaId")
-    var mediaId: String? = null
+    @XStreamAlias("Content")
+    var content: String? = null
 
 }

@@ -17,23 +17,49 @@
  * limitations under the License.
  */
 
-package org.lijun.common.wechat.message.vo
+package org.lijun.common.wechat.message.response
 
-import java.io.Serializable
 import com.thoughtworks.xstream.annotations.XStreamAlias
+import java.io.Serializable
 
 /**
- * 微信响应图片
+ * 微信响应消息基类
  *
  * @author lijun
  * @constructor
  */
-class Image : Serializable {
+@XStreamAlias("xml")
+abstract class ResponseMessage : Serializable {
 
     /**
-     * 通过素材管理接口上传多媒体文件，得到的id
+     * 开发者微信号
      */
-    @XStreamAlias("MediaId")
-    var mediaId: String? = null
+    @XStreamAlias("ToUserName")
+    var toUserName: String? = null
+
+    /**
+     * 发送方帐号（一个OpenID）
+     */
+    @XStreamAlias("FromUserName")
+    var fromUserName: String? = null
+
+    /**
+     * 消息创建时间
+     */
+    @XStreamAlias("CreateTime")
+    var createTime: Long? = null
+
+    /**
+     * 消息类型
+     * 可选值：text、image、voice、video、music、news
+     */
+    @XStreamAlias("MsgType")
+    var msgType: String? = null
+
+    constructor()
+
+    constructor(msgType: String) {
+        this.msgType = msgType
+    }
 
 }

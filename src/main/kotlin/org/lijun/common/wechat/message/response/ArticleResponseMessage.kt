@@ -17,23 +17,30 @@
  * limitations under the License.
  */
 
-package org.lijun.common.wechat.message.vo
+package org.lijun.common.wechat.message.response
 
-import java.io.Serializable
 import com.thoughtworks.xstream.annotations.XStreamAlias
+import org.lijun.common.wechat.message.vo.Article
 
 /**
- * 微信响应图片
+ * 微信回复图文消息封装
  *
  * @author lijun
  * @constructor
  */
-class Image : Serializable {
+@XStreamAlias("xml")
+class ArticleResponseMessage : ResponseMessage("news") {
 
     /**
-     * 通过素材管理接口上传多媒体文件，得到的id
+     * 图文消息个数，限制为10条以内
      */
-    @XStreamAlias("MediaId")
-    var mediaId: String? = null
+    @XStreamAlias("ArticleCount")
+    var articleCount: Int? = null
 
+    /**
+     * 多条图文消息信息，默认第一个item为大图,注意，如果图文数超过10，则将会无响应
+     */
+    @XStreamAlias("Articles")
+    var articles: List<Article>? = null
+    
 }
