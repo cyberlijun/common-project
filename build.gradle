@@ -71,3 +71,7 @@ compileTestKotlin {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+task wrapper(type: Wrapper) {
+    gradleVersion = 4.0
+}
