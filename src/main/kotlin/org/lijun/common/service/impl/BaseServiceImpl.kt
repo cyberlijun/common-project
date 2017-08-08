@@ -19,12 +19,16 @@
 
 package org.lijun.common.service.impl
 
+import org.apache.ibatis.session.SqlSession
 import org.lijun.common.querycondition.DataTableQueryCondition
 import org.lijun.common.repository.BaseRepository
 import org.lijun.common.service.BaseService
 import org.lijun.common.util.SpringDataUtils
 import org.lijun.common.vo.DataTable
 import org.lijun.common.vo.PageList
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -40,6 +44,11 @@ import java.io.Serializable
  * @constructor
  */
 abstract class BaseServiceImpl<T, ID : Serializable>(val repository: BaseRepository<T, ID>) : BaseService<T, ID> {
+
+    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
+
+    @Autowired
+    protected lateinit var sqlSession: SqlSession
 
     /**
      * 新增、修改
