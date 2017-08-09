@@ -109,6 +109,39 @@ object IdentityUtils {
     }
 
     /**
+     * 根据身份证号获取出生日期
+     * @param identity
+     * @return
+     * @throws IllegalArgumentException
+     * @throws ParseException
+     */
+    @JvmStatic
+    @Throws(IllegalArgumentException::class, ParseException::class)
+    fun getBirth(identity: String): Date {
+        var idCard: String = prepare(identity)
+
+        return DateUtils.parseDateStrictly(idCard.substring(6, 14), "yyyyMMdd")
+    }
+
+    /**
+     * 根据身份证号获取年龄
+     * @param identity
+     * @return
+     * @throws IllegalArgumentException
+     */
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    fun getAge(identity: String): Int {
+        var idCard: String = prepare(identity)
+
+        val year: String = idCard.substring(6, 10)
+
+        val cal: Calendar = Calendar.getInstance()
+
+        return cal.get(Calendar.YEAR) - year.toInt()
+    }
+
+    /**
      * 校验18位身份证
      * @param identity
      * @return
@@ -263,6 +296,14 @@ object IdentityUtils {
         }
     }
 
+    /**
+     * 校验日期
+     * @param iYear
+     * @param iMonth
+     * @param iDate
+     * @return
+     */
+    @JvmStatic
     private fun validateDate(iYear: Int, iMonth: Int, iDate: Int): Boolean {
         val cal = Calendar.getInstance()
 
@@ -289,6 +330,30 @@ object IdentityUtils {
         }
 
         return iDate in 1..datePerMonth
+    }
+
+    /**
+     * 预处理
+     * @param identity
+     * @return
+     * @throws IllegalArgumentException
+     */
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    private fun prepare(identity: String): String {
+        var idCard: String = identity
+
+        if (idCard.length < CHINA_ID_MIN_LENGTH || idCard.length > CHINA_ID_MAX_LENGTH) {
+            throw IllegalArgumentException("身份证号长度无效")
+        }
+
+        if (!validate(idCard)) throw IllegalArgumentException("无效身份证号")
+
+        if (idCard.length == CHINA_ID_MIN_LENGTH) {
+            idCard = convert15To18(idCard)
+        }
+
+        return idCard
     }
 
 }
