@@ -51,7 +51,9 @@ dependencies {
     compile "org.apache.httpcomponents:httpmime:$httpcomponents_version"
     compile "commons-io:commons-io:$commons_io_version"
     compile "com.vdurmont:emoji-java:$emoji_java_version"
-    compile "net.sourceforge.jexcelapi:jxl:$jxl_version"
+    compile(group: 'net.sourceforge.jexcelapi', name: 'jxl', version: "$jxl_version") {
+        exclude group: 'log4j', module: 'log4j'
+    }
     compile "commons-beanutils:commons-beanutils:$commons_beanutils_version"
     compile "org.apache.ant:ant:$ant_core_version"
     compile "org.apache.poi:poi:$poi_version"
