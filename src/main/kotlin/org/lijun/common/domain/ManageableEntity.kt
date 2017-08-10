@@ -47,7 +47,7 @@ abstract class ManageableEntity : BaseEntity() {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty
     @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN)
-    private var createDate: Date? = null
+    var createDate: Date? = null
 
     /**
      * 最后修改时间
@@ -56,6 +56,6 @@ abstract class ManageableEntity : BaseEntity() {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty
     @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN)
-    private var updateDate: Date? = null
+    var updateDate: Date? = null
 
 }
