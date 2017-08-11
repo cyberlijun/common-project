@@ -54,7 +54,7 @@ abstract class BaseController : ServletContextAware {
 
     protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    private lateinit var ctx: ServletContext
+    protected lateinit var ctx: ServletContext
 
     override fun setServletContext(servletContext: ServletContext?) {
         this.ctx = servletContext!!
