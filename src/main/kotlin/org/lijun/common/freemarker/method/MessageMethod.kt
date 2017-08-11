@@ -23,6 +23,7 @@ import freemarker.template.SimpleScalar
 import freemarker.template.TemplateMethodModelEx
 import freemarker.template.TemplateModelException
 import org.lijun.common.util.SpringContextHolder
+import org.springframework.stereotype.Component
 
 /**
  *
@@ -30,6 +31,7 @@ import org.lijun.common.util.SpringContextHolder
  * @author lijun
  * @constructor
  */
+@Component
 open class MessageMethod : TemplateMethodModelEx {
 
     /**
