@@ -23,17 +23,15 @@ import freemarker.template.SimpleScalar
 import freemarker.template.TemplateMethodModelEx
 import freemarker.template.TemplateModelException
 import org.lijun.common.util.SpringContextHolder
-import org.springframework.stereotype.Component
 
 /**
- * TemplateMethod - MessageMethod
- * 自定义模板方法，用于从国际化文件中获取指定消息
+ * TemplateMethod - PropertyMethod
+ * 自定义模板方法，用于从properties文件中获取属性值
  *
  * @author lijun
  * @constructor
  */
-@Component
-open class MessageMethod : TemplateMethodModelEx {
+open class PropertyMethod : TemplateMethodModelEx {
 
     /**
      * Executes the method call.
@@ -55,7 +53,7 @@ open class MessageMethod : TemplateMethodModelEx {
             throw TemplateModelException("未传递参数或参数个数大于1个")
         }
 
-        return SimpleScalar("${SpringContextHolder.getMessage(arguments[0].toString())}")
+        return SimpleScalar(SpringContextHolder.getProperty(arguments[0].toString()))
     }
 
 }
