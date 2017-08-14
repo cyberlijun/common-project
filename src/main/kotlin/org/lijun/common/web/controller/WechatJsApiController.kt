@@ -39,7 +39,7 @@ abstract class WechatJsApiController : BaseController() {
      * 初始化微信JS API
      * @param model
      */
-    protected fun initWechatJsApi(model: Model) {
+    protected open fun initWechatJsApi(model: Model) {
         val jsApiTicket = JsApiTicketContext.get()
         val timestamp: String = (System.currentTimeMillis() / 1000).toString()
         val nonceStr: String = SystemUtils.uuid()

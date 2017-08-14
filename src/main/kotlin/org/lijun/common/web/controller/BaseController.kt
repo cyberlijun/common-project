@@ -65,7 +65,7 @@ abstract class BaseController : ServletContextAware {
      * @param binder
      */
     @InitBinder
-    fun init(binder: WebDataBinder) {
+    open fun init(binder: WebDataBinder) {
         val format: DateFormat = SimpleDateFormat(Constants.DEFAULT_DATE_PATTERN)
 
         val propertyEditor: PropertyEditor = CustomDateEditor(format, true)
@@ -79,7 +79,7 @@ abstract class BaseController : ServletContextAware {
      * @param message
      * @param redirectAttributes
      */
-    protected fun addFlashMessage(message: String, redirectAttributes: RedirectAttributes) {
+    protected open fun addFlashMessage(message: String, redirectAttributes: RedirectAttributes) {
         addFlashMessage(Constants.FLASH_MESSAGE_KEY, message, redirectAttributes)
     }
 
@@ -89,7 +89,7 @@ abstract class BaseController : ServletContextAware {
      * @param attributeValue
      * @param redirectAttributes
      */
-    protected fun addFlashMessage(attributeName: String, attributeValue: String, redirectAttributes: RedirectAttributes) {
+    protected open fun addFlashMessage(attributeName: String, attributeValue: String, redirectAttributes: RedirectAttributes) {
         redirectAttributes.addFlashAttribute(attributeName, attributeValue)
     }
 
@@ -98,7 +98,7 @@ abstract class BaseController : ServletContextAware {
      * @param message
      * @param model
      */
-    protected fun addFlashMessage(message: String, model: Model) {
+    protected open fun addFlashMessage(message: String, model: Model) {
         addFlashMessage(Constants.FLASH_MESSAGE_KEY, message, model)
     }
 
@@ -108,7 +108,7 @@ abstract class BaseController : ServletContextAware {
      * @param message
      * @param model
      */
-    protected fun addFlashMessage(attributeName: String, message: String, model: Model) {
+    protected open fun addFlashMessage(attributeName: String, message: String, model: Model) {
         model.addAttribute(attributeName, message)
     }
 
@@ -117,7 +117,7 @@ abstract class BaseController : ServletContextAware {
      * @param dir 目录
      * @return 返回/upload/dir/当前日期格式的目录
      */
-    protected fun getUploadDir(dir: String): String {
+    protected open fun getUploadDir(dir: String): String {
         return "/upload/$dir/${DateFormatUtils.format(Date(), "yyyyMMdd")}"
     }
 
@@ -129,7 +129,7 @@ abstract class BaseController : ServletContextAware {
      * @throws IOException
      */
     @Throws(IOException::class)
-    protected fun fileUpload(dir: String, randomFileName: String, file: MultipartFile) {
+    protected open fun fileUpload(dir: String, randomFileName: String, file: MultipartFile) {
         var input: InputStream? = null
 
         var out: OutputStream? = null
@@ -161,7 +161,7 @@ abstract class BaseController : ServletContextAware {
      * @throws IOException
      */
     @Throws(IOException::class)
-    protected fun writePlain(text: String, response: HttpServletResponse) = write("text/plain; charset=UTF-8", text, response)
+    protected open fun writePlain(text: String, response: HttpServletResponse) = write("text/plain; charset=UTF-8", text, response)
 
     /**
      * 向客户端输出文本内容
@@ -170,7 +170,7 @@ abstract class BaseController : ServletContextAware {
      * @throws IOException
      */
     @Throws(IOException::class)
-    protected fun writeJson(json: String, response: HttpServletResponse) = write("application/json; charset=UTF-8", json, response)
+    protected open fun writeJson(json: String, response: HttpServletResponse) = write("application/json; charset=UTF-8", json, response)
 
     /**
      * 向客户端输出文本内容
@@ -179,7 +179,7 @@ abstract class BaseController : ServletContextAware {
      * @throws IOException
      */
     @Throws(IOException::class)
-    protected fun writeXml(xml: String, response: HttpServletResponse) = write("application/xml; charset=UTF-8", xml, response)
+    protected open fun writeXml(xml: String, response: HttpServletResponse) = write("application/xml; charset=UTF-8", xml, response)
 
     /**
      * 导出文件
@@ -189,7 +189,7 @@ abstract class BaseController : ServletContextAware {
      * @param response
      * @throws
      */
-    protected fun export(contentType: String = Constants.EXCEL_CONTENT_TYPE, filename: String, input: InputStream, response: HttpServletResponse) {
+    protected open fun export(contentType: String = Constants.EXCEL_CONTENT_TYPE, filename: String, input: InputStream, response: HttpServletResponse) {
         var out: OutputStream? = null
 
         try {
@@ -209,21 +209,21 @@ abstract class BaseController : ServletContextAware {
      * 操作成功
      * @return
      */
-    protected fun success(): JsonResult = success(Constants.STATUS_SUCCESS)
+    protected open fun success(): JsonResult = success(Constants.STATUS_SUCCESS)
 
     /**
 	 * 操作成功
 	 * @param data
 	 * @return
 	 */
-	protected fun success(data: Any?) = createJsonResult(Constants.STATUS_SUCCESS, data = data)
+	protected open fun success(data: Any?) = createJsonResult(Constants.STATUS_SUCCESS, data = data)
 
     /**
      * 操作失败
      * @param message
      * @return
      */
-    protected fun error(message: String) = error(message, null)
+    protected open fun error(message: String) = error(message, null)
 
     /**
      * 操作失败
@@ -231,7 +231,7 @@ abstract class BaseController : ServletContextAware {
      * @param data
      * @return
      */
-    protected fun error(message: String, data: Any?) = createJsonResult(Constants.STATUS_ERROR, message, data = data)
+    protected open fun error(message: String, data: Any?) = createJsonResult(Constants.STATUS_ERROR, message, data = data)
 
     /**
      * 向客户端输出内容
