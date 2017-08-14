@@ -86,7 +86,7 @@ open class WechatServiceImpl : WechatService {
      */
     @Throws(WechatException::class)
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    @Scheduled(cron = "0 0 1/1 * * ?")
+    @Scheduled(cron = "\${job.refresh-accesstoken}")
     override fun refreshAccessToken() {
         logger.info("开始刷新access_token...")
 
@@ -190,7 +190,7 @@ open class WechatServiceImpl : WechatService {
      */
     @Throws(WechatException::class)
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    @Scheduled(cron = "0 30 1/1 * * ?")
+    @Scheduled(cron = "\${job.refresh-jsapi-ticket}")
     override fun refreshJsApiTicket() {
         logger.info("开始刷新jsapi_ticket...")
 
