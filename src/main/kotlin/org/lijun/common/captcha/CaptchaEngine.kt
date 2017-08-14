@@ -115,7 +115,6 @@ open class CaptchaEngine(val captchaImagePath: String) : ListImageCaptchaEngine(
         private val fonts: Array<Font> = arrayOf(
                 Font("nyala", Font.BOLD, MAX_FONT_SIZE),
                 Font("Arial", Font.BOLD, MAX_FONT_SIZE),
-                Font("nyala", Font.BOLD, MAX_FONT_SIZE),
                 Font("Bell", Font.BOLD, MAX_FONT_SIZE),
                 Font("Bell MT", Font.BOLD, MAX_FONT_SIZE),
                 Font("Credit", Font.BOLD, MAX_FONT_SIZE),
