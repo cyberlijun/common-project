@@ -35,6 +35,7 @@ import com.octo.captcha.engine.image.ListImageCaptchaEngine
 import com.octo.captcha.image.ImageCaptchaFactory
 import com.octo.captcha.image.gimpy.GimpyFactory
 import org.apache.commons.lang3.RandomStringUtils
+import org.lijun.common.util.SpringContextHolder
 import org.springframework.util.ResourceUtils
 import java.awt.Color
 import java.awt.Font
@@ -46,10 +47,12 @@ import java.io.FileNotFoundException
  * @author lijun
  * @constructor
  */
-open class CaptchaEngine(val captchaImagePath: String) : ListImageCaptchaEngine() {
+open class CaptchaEngine() : ListImageCaptchaEngine() {
 
     @Throws(FileNotFoundException::class, IllegalArgumentException::class, CaptchaException::class)
     override fun buildInitialFactories() {
+        val captchaImagePath: String = SpringContextHolder.getProperty("captchaImagePath")
+
         val path: String = ResourceUtils.getFile(captchaImagePath).path
 
         val fontGenerator: FontGenerator = RandomFontGenerator(MIN_FONT_SIZE, MAX_FONT_SIZE, fonts)
