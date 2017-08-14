@@ -19,6 +19,7 @@ buildscript {
         xstream_version = '1.4.8'
         springboot_mybatis_version = '1.3.0'
         commons_file_upload_version = '1.3.1'
+        shiro_core_version = '1.2.4'
     }
 
     repositories {
@@ -71,6 +72,7 @@ dependencies {
     compile(group: 'commons-fileupload', name: 'commons-fileupload', version: "$commons_file_upload_version") {
         exclude group: 'commons-io', module: 'commons-io'
     }
+    compile "org.apache.shiro:shiro-core:$shiro_core_version"
 }
 
 compileKotlin {
