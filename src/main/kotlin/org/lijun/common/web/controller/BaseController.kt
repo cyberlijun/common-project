@@ -52,9 +52,9 @@ import javax.servlet.http.HttpServletResponse
  */
 abstract class BaseController : ServletContextAware {
 
-    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
+    protected open val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    protected lateinit var ctx: ServletContext
+    protected open lateinit var ctx: ServletContext
 
     override fun setServletContext(servletContext: ServletContext?) {
         this.ctx = servletContext!!
@@ -241,7 +241,7 @@ abstract class BaseController : ServletContextAware {
      * @throws IOException
      */
     @Throws(IOException::class)
-    private fun write(contentType: String, content: String, response: HttpServletResponse) {
+    internal open fun write(contentType: String, content: String, response: HttpServletResponse) {
         response.contentType = contentType
         response.characterEncoding = Constants.DEFAULT_CHARSET
 
@@ -265,7 +265,7 @@ abstract class BaseController : ServletContextAware {
      * @param data
      * @return
      */
-    private fun createJsonResult(status: String, message: String = StringUtils.EMPTY, data: Any?): JsonResult {
+    internal open fun createJsonResult(status: String, message: String = StringUtils.EMPTY, data: Any?): JsonResult {
         return JsonResult(status, message, data)
     }
 

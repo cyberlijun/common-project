@@ -44,10 +44,9 @@ import java.io.FileNotFoundException
  * 验证码引擎
  *
  * @author lijun
- * @property captchaImagePath 验证码背景图片路径
  * @constructor
  */
-open class CaptchaEngine(var captchaImagePath: String) : ListImageCaptchaEngine() {
+open class CaptchaEngine(val captchaImagePath: String) : ListImageCaptchaEngine() {
 
     @Throws(FileNotFoundException::class, IllegalArgumentException::class, CaptchaException::class)
     override fun buildInitialFactories() {

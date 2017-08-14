@@ -176,6 +176,25 @@ open class SpringContextHolder : ApplicationContextAware, DisposableBean {
         }
 
         /**
+         * 获取属性
+         * @param key
+         * @return
+         */
+        @JvmStatic
+        fun getProperty(key: String): String = getProperty(key, StringUtils.EMPTY)
+
+        /**
+         * 获取属性
+         * @param key
+         * @param defaultValue
+         * @return
+         */
+        @JvmStatic
+        fun getProperty(key: String, defaultValue: String): String {
+            return SpringContextHolder.applicationContext?.environment?.getProperty(key, defaultValue)!!
+        }
+
+        /**
          * 检查applicationContext属性被注入
          */
         @JvmStatic

@@ -43,12 +43,12 @@ import java.io.Serializable
  * @author lijun
  * @constructor
  */
-abstract class BaseServiceImpl<T, ID : Serializable>(val repository: BaseRepository<T, ID>) : BaseService<T, ID> {
+abstract class BaseServiceImpl<T, ID : Serializable>(open val repository: BaseRepository<T, ID>) : BaseService<T, ID> {
 
-    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
+    protected open val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @Autowired
-    protected lateinit var sqlSession: SqlSession
+    protected open lateinit var sqlSession: SqlSession
 
     /**
      * 新增、修改

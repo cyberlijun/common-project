@@ -96,7 +96,7 @@ object MailUtils {
 
         val helper: MimeMessageHelper = MimeMessageHelper(mimeMessage, true)
 
-        helper.setFrom(SpringContextHolder.getMessage("spring.mail.from"))
+        helper.setFrom(SpringContextHolder.getProperty("spring.mail.from"))
         helper.setTo(to)
         helper.setSubject(subject.toString())
         helper.setText(content.toString(), true)
