@@ -65,7 +65,7 @@ internal class HttpClient {
     /**
      * RequestConfig instance
      */
-    private lateinit var requestConfig: RequestConfig
+    private var requestConfig: RequestConfig
 
     /**
      * 请求头
@@ -83,6 +83,13 @@ internal class HttpClient {
     init {
         headers += BasicHeader(HttpHeaders.USER_AGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)")
         headers += BasicHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_FORM_URLENCODED.toString())
+
+        requestConfig = RequestConfig.custom()
+                                     .setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
+                                     .setConnectionRequestTimeout(DEFAULT_CONN_POOL_TIMEOUT)
+                                     .setSocketTimeout(DEFAULT_READ_TIMEOUT)
+                                     .setCircularRedirectsAllowed(true)
+                                     .build()
     }
 
     /**
@@ -277,13 +284,6 @@ internal class HttpClient {
             sslContext.init(null, arrayOf(NoopX509TrustManager()), null)
 
             val sf: SSLConnectionSocketFactory = SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier())
-
-            this.requestConfig = RequestConfig.custom()
-                                              .setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
-                                              .setConnectionRequestTimeout(DEFAULT_CONN_POOL_TIMEOUT)
-                                              .setSocketTimeout(DEFAULT_READ_TIMEOUT)
-                                              .setCircularRedirectsAllowed(true)
-                                              .build()
 
             this.client = HttpClientBuilder.create()
                                            .setSchemePortResolver(DefaultSchemePortResolver.INSTANCE)

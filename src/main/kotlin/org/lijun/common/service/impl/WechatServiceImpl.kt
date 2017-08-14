@@ -65,7 +65,7 @@ open class WechatServiceImpl : WechatService {
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
             if (StringUtils.contains(response.content, "errcode")) {
-                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!)
+                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!, WechatErrorDetail::class.java)
 
                 if (!StringUtils.equals("0", wechatError.errorCode)) {
                     wechatError.errorType = WechatErrorType.GET_ACCESS_TOKEN_ERROR
@@ -73,7 +73,7 @@ open class WechatServiceImpl : WechatService {
                     throw WechatException(wechatError)
                 }
             } else {
-                return JsonUtils.fromJson(response.content!!)
+                return JsonUtils.fromJson(response.content!!, AccessToken::class.java)
             }
         }
 
@@ -112,13 +112,13 @@ open class WechatServiceImpl : WechatService {
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
             if (StringUtils.contains(response.content, "errcode")) {
-                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!)
+                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!, WechatErrorDetail::class.java)
 
                 wechatError.errorType = WechatErrorType.FETCH_USER_INFO_ERROR
 
                 throw WechatException(wechatError)
             } else {
-                val map: Map<String, Any> = JsonUtils.fromJson(response.content!!)
+                val map: Map<*, *> = JsonUtils.fromJson(response.content!!, Map::class.java)
 
                 val user: WechatUserInfo = WechatUserInfo()
 
@@ -164,7 +164,7 @@ open class WechatServiceImpl : WechatService {
         val response: HttpResponseWrapper<String> = HttpUtils.get(WechatApiUrls.getJsApiTicketUrl())
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
-            val map: Map<String, Any> = JsonUtils.fromJson(response.content!!)
+            val map: Map<*, *> = JsonUtils.fromJson(response.content!!, Map::class.java)
 
             val errcode: String = MapUtils.getString(map, "errcode")
 
@@ -216,13 +216,13 @@ open class WechatServiceImpl : WechatService {
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
             if (StringUtils.contains(response.content, "errcode")) {
-                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!)
+                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!, WechatErrorDetail::class.java)
 
                 wechatError.errorType = WechatErrorType.GET_OAUTH_ACCESS_TOKEN_ERROR
 
                 throw WechatException(wechatError)
             } else {
-                val map: Map<String, Any> = JsonUtils.fromJson(response.content!!)
+                val map: Map<*, *> = JsonUtils.fromJson(response.content!!, Map::class.java)
 
                 return MapUtils.getString(map, "openid")
             }

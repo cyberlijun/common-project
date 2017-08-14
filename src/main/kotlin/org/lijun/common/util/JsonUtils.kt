@@ -22,7 +22,7 @@ package org.lijun.common.util
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.lijun.common.support.CustomObjectMapper
@@ -57,18 +57,65 @@ object JsonUtils {
     fun toJson(o: Any, include: JsonInclude.Include?): String = CustomObjectMapper(include).writeValueAsString(o)
 
     /**
-     * 将JSON字符串转换为对象
+     * 将JSON解析为对象
      * @param json
-     * @param clazz
+     * @param elementClass
      * @return
      * @throws IOException
-     * @throws JsonProcessingException
+     * @throws JsonParseException
      * @throws JsonMappingException
      */
     @JvmStatic
     @Throws(IOException::class,
             JsonParseException::class,
             JsonMappingException::class)
-    fun <T> fromJson(json: String): T = CustomObjectMapper().readValue(json, object : TypeReference<T>() { })
+    fun <T> fromJson(json: String, elementClass: Class<T>): T {
+        return CustomObjectMapper().readValue(json, elementClass)
+    }
+
+    /**
+     * 将JSON解析为集合类型
+     * @param json
+     * @param collectionClass
+     * @param elementClass
+     * @return
+     * @throws IOException
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     */
+    @JvmStatic
+    @Throws(IOException::class,
+            JsonParseException::class,
+            JsonMappingException::class)
+    fun <T> fromJson(json: String, collectionClass: Class<Collection<*>>, elementClass: Class<*>): T {
+        val om: ObjectMapper = CustomObjectMapper()
+
+        val type: JavaType = om.typeFactory.constructCollectionType(collectionClass, elementClass)
+
+        return om.readValue(json, type)
+    }
+
+    /**
+     * 将JSON数据解析为Map类型
+     * @param json
+     * @param mapClass
+     * @param keyClass
+     * @param valueClass
+     * @return
+     * @throws IOException
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     */
+    @JvmStatic
+    @Throws(IOException::class,
+            JsonParseException::class,
+            JsonMappingException::class)
+    fun <T> fromJson(json: String, mapClass: Class<Map<*, *>>, keyClass: Class<*>, valueClass: Class<*>): T {
+        val om: ObjectMapper = CustomObjectMapper()
+
+        val type: JavaType = om.typeFactory.constructMapType(mapClass, keyClass, valueClass)
+
+        return om.readValue(json, type)
+    }
 
 }
