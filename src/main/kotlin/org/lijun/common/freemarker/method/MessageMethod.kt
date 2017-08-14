@@ -54,7 +54,7 @@ open class MessageMethod : TemplateMethodModelEx {
             throw TemplateModelException("未传递参数或参数个数大于1个")
         }
 
-        return SimpleScalar("${SpringContextHolder.getMessage(arguments[0].toString())}")
+        return SimpleScalar("${SpringContextHolder.getProperty(arguments[0].toString())}")
     }
 
 }
