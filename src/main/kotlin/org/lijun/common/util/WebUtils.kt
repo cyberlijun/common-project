@@ -47,28 +47,26 @@ object WebUtils {
      * @return
      */
     @JvmStatic
-    fun getRemoteIp(): String {
+    fun getRemoteIp(request: HttpServletRequest): String {
         val unknown: String = "unknown"
 
-        val request: HttpServletRequest = getRequest()
-
-        var ip: String = StringUtils.EMPTY
+        var ip: String? = null
 
         proxyIpHeaders.forEach {
             if (StringUtils.isBlank(ip) || unknown.equals(ip, true)) {
-                ip = request.getHeader(it);
+                ip = request.getHeader(it)
             } else return@forEach
         }
 
         if (StringUtils.isBlank(ip) || unknown.equals(ip, true)) {
             ip = request.remoteAddr
         } else {
-            if (StringUtils.INDEX_NOT_FOUND != ip.indexOf(",")) {
-                ip = ip.substring(0, ip.indexOf(","))
+            if (StringUtils.INDEX_NOT_FOUND != ip!!.indexOf(",")) {
+                ip = ip?.substring(0, ip!!.indexOf(","))
             }
         }
 
-        return ip
+        return ip!!
     }
 
     /**
