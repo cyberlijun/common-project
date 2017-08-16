@@ -34,7 +34,6 @@ import com.octo.captcha.component.word.wordgenerator.WordGenerator
 import com.octo.captcha.engine.image.ListImageCaptchaEngine
 import com.octo.captcha.image.ImageCaptchaFactory
 import com.octo.captcha.image.gimpy.GimpyFactory
-import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.util.ResourceUtils
 import java.awt.Color
 import java.awt.Font
@@ -87,12 +86,12 @@ open class CaptchaEngine() : ListImageCaptchaEngine() {
         /**
          * 最小字体尺寸
          */
-        private const val MIN_FONT_SIZE: Int = 12
+        private const val MIN_FONT_SIZE: Int = 20
 
         /**
          * 最大字体尺寸
          */
-        private const val MAX_FONT_SIZE: Int = 16
+        private const val MAX_FONT_SIZE: Int = 30
 
         /**
          * 验证码最小字符个数
@@ -107,7 +106,7 @@ open class CaptchaEngine() : ListImageCaptchaEngine() {
         /**
          * 验证码随机字符串
          */
-        private val randomString: String = RandomStringUtils.random(38, 0, 0, true, true, 'o', '0', 'O', 'i', 'I', '1', 'l')
+        private val randomString: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZSZHZOZPZXZXZ"
 
         /**
          * 随机字体
