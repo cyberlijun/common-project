@@ -44,7 +44,7 @@ object ObjectUtils {
     @Throws(SecurityException::class,
             IllegalArgumentException::class,
             IllegalAccessException::class)
-    fun copyProperties(destnation: Any, origional: Any, vararg ignoreProperties: String?) {
+    fun copyProperties(destnation: Any, origional: Any, vararg ignoreProperties: String? = arrayOf()) {
         var destnationFields: Array<Field> = addSuperClassFields(destnation.javaClass::class.java, destnation.javaClass.declaredFields)
         var origionalFields: Array<Field> = addSuperClassFields(origional.javaClass, origional.javaClass.declaredFields)
 
