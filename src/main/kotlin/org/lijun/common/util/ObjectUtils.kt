@@ -33,8 +33,9 @@ object ObjectUtils {
 
     /**
      * 拷贝对象属性
-     * @param destnation
-     * @param origional
+     * @param destnation 目标对象
+     * @param origional 原始对象
+     * @param ignoreProperties 忽略的属性
      * @throws SecurityException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
@@ -43,7 +44,7 @@ object ObjectUtils {
     @Throws(SecurityException::class,
             IllegalArgumentException::class,
             IllegalAccessException::class)
-    fun copyProperties(destnation: Any, origional: Any) {
+    fun copyProperties(destnation: Any, origional: Any, vararg ignoreProperties: String?) {
         var destnationFields: Array<Field> = addSuperClassFields(destnation.javaClass::class.java, destnation.javaClass.declaredFields)
         var origionalFields: Array<Field> = addSuperClassFields(origional.javaClass, origional.javaClass.declaredFields)
 
@@ -59,7 +60,7 @@ object ObjectUtils {
                     return@innerLoop
                 }
 
-                if (name.equals(destField.name) && returnType.equals(destField.type.name)) {
+                if (name == destField.name && returnType == destField.type.name && ignoreProperties.contains(destField.name).not()) {
                     val value: Any? = origField.get(origional)
 
                     destField.set(destnation, value)
