@@ -106,7 +106,7 @@ class PrincipalTag : SecureTag() {
 
             beanInfo.propertyDescriptors.forEach {
                 if (StringUtils.equals(it.name, property)) {
-                    val value: Any? = it.readMethod.invoke(principal, null)
+                    val value: Any? = it.readMethod.invoke(principal)
 
                     return value?.toString()
                 }
