@@ -17,14 +17,12 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 import freemarker.core.Environment
 import freemarker.template.*
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 
 /**
@@ -34,8 +32,6 @@ import java.io.IOException
  * @constructor
  */
 abstract class SecureTag : TemplateDirectiveModel {
-
-    protected val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @Throws(TemplateException::class, IOException::class)
     override fun execute(env: Environment?, params: MutableMap<Any?, Any?>?, loopVars: Array<out TemplateModel>?, body: TemplateDirectiveBody?) {
@@ -48,23 +44,21 @@ abstract class SecureTag : TemplateDirectiveModel {
     abstract fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?)
 
     protected fun getParam(params: MutableMap<Any?, Any?>?, name: String): String? {
-        val value: Any = params?.get(name)!!
+        val value: Any? = params!![name]
 
-        if (value is SimpleScalar) {
+        if (null != value && value is SimpleScalar) {
             return value.asString
         }
 
         return null
     }
 
-    @Throws(TemplateModelException::class)
-    protected open fun verifyParameters(params: MutableMap<Any?, Any?>?) {
-
-    }
-
     protected fun getSubject(): Subject? = SecurityUtils.getSubject()
 
+    @Throws(TemplateException::class)
+    protected open fun verifyParameters(params: MutableMap<Any?, Any?>?) = Unit
+
     @Throws(TemplateException::class, IOException::class)
-    protected fun renderBody(env: Environment?, body: TemplateDirectiveBody?) = body?.render(env!!.out)
+    protected fun renderBody(env: Environment?, body: TemplateDirectiveBody?) = body?.render(env?.out)
 
 }

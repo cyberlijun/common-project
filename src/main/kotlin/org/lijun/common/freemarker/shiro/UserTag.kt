@@ -17,10 +17,13 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 import freemarker.core.Environment
 import freemarker.template.TemplateDirectiveBody
+import freemarker.template.TemplateException
+import org.apache.shiro.subject.Subject
+import java.io.IOException
 
 /**
  * Freemarker tag that renders the tag body if the current user known to the system, either from a successful login attempt
@@ -41,17 +44,12 @@ import freemarker.template.TemplateDirectiveBody
  */
 class UserTag : SecureTag() {
 
+    @Throws(TemplateException::class, IOException::class)
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
-        if (null != getSubject() && null != getSubject()!!.principal) {
-            if (logger.isDebugEnabled) {
-                logger.debug("Subject has known identity (aka 'principal'). Tag body will be evaluated.")
-            }
+        val subject: Subject? = getSubject()
 
+        if (null != subject && null != subject.principal) {
             renderBody(env, body)
-        } else {
-            if (logger.isDebugEnabled) {
-                logger.debug("Subject does not exist or have a known identity (aka 'principal'). Tag body will not be evaluated.")
-            }
         }
     }
 

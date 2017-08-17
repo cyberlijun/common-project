@@ -17,13 +17,16 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 import freemarker.core.Environment
 import freemarker.template.TemplateDirectiveBody
+import freemarker.template.TemplateException
 import freemarker.template.TemplateModelException
 import org.apache.commons.lang3.StringUtils
+import org.apache.shiro.subject.Subject
 import java.beans.BeanInfo
+import java.beans.IntrospectionException
 import java.beans.Introspector
 import java.io.IOException
 
@@ -44,23 +47,25 @@ import java.io.IOException
  * @author lijun
  * @constructor
  */
-
 class PrincipalTag : SecureTag() {
 
+    @Throws(TemplateException::class, IOException::class)
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
         var result: String? = null
 
-        if (null != getSubject()) {
+        val subject: Subject? = getSubject()
+
+        if (null != subject) {
             var principal: Any?
 
-            if (StringUtils.isBlank(getType(params))) {
-                principal = getSubject()?.principal
+            if (StringUtils.isNotBlank(getType(params))) {
+                principal = subject.principal
             } else {
                 principal = getPrincipalFromClassName(params)
             }
 
             if (null != principal) {
-                val property: String = getProperty(params)
+                val property: String? = getProperty(params)
 
                 if (StringUtils.isBlank(property)) {
                     result = principal.toString()
@@ -75,32 +80,40 @@ class PrincipalTag : SecureTag() {
         }
     }
 
-    @Throws(IOException::class, TemplateModelException::class)
-    private fun getPrincipalFromClassName(params: MutableMap<Any?, Any?>?): Any? {
-        val type: String = getType(params)
+    private fun getType(params: MutableMap<Any?, Any?>?): String? = getParam(params, "type")
 
-        return getSubject()?.principals?.oneByType(Class.forName(type))
+    private fun getProperty(params: MutableMap<Any?, Any?>?): String? = getParam(params, "property")
+
+    @Throws(ClassNotFoundException::class)
+    private fun getPrincipalFromClassName(params: MutableMap<Any?, Any?>?): Any? {
+        val type: String? = getType(params)
+
+        val subject: Subject? = getSubject()
+
+        if (StringUtils.isNotBlank(type) && null != subject) {
+            val cls: Class<*> = Class.forName(type)
+
+            return subject.principals.oneByType(cls)
+        }
+
+        return null
     }
 
-    @Throws(TemplateModelException::class)
-    private fun getPrincipalProperty(principal: Any, property: String): String {
-        var result: String = StringUtils.EMPTY
+    @Throws(TemplateModelException::class, IntrospectionException::class)
+    private fun getPrincipalProperty(principal: Any?, property: String?): String? {
+        if (null != principal) {
+            val beanInfo: BeanInfo = Introspector.getBeanInfo(principal::class.java)
 
-        val beanInfo: BeanInfo = Introspector.getBeanInfo(principal.javaClass)
+            beanInfo.propertyDescriptors.forEach {
+                if (StringUtils.equals(it.name, property)) {
+                    val value: Any? = it.readMethod.invoke(principal, null)
 
-        beanInfo.propertyDescriptors.forEach {
-            if (StringUtils.equals(it.name, property)) {
-                result = it.readMethod.invoke(principal).toString()
-
-                return@forEach
+                    return value?.toString()
+                }
             }
         }
 
-        return result
+        throw TemplateModelException()
     }
-
-    private fun getType(params: MutableMap<Any?, Any?>?): String = getParam(params, "type")!!
-
-    private fun getProperty(params: MutableMap<Any?, Any?>?): String = getParam(params, "property")!!
 
 }

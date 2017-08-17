@@ -17,42 +17,36 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
+import freemarker.core.Environment
+import freemarker.template.TemplateDirectiveBody
 import org.apache.shiro.subject.Subject
 
 /**
- * Displays body content if the current user has any of the roles specified.
+ * JSP tag that renders the tag body only if the current user has executed a <b>successful</b> authentication attempt
+ * <em>during their current session</em>.
  *
- * <p>Equivalent to {@link org.apache.shiro.web.tags.HasAnyRolesTag}</p>
+ * <p>This is more restrictive than the {@link UserTag}, which only
+ * ensures the current user is known to the system, either via a current login or from Remember Me services,
+ * which only makes the assumption that the current user is who they say they are, and does not guarantee it like
+ * this tag does.
+ *
+ * <p>The logically opposite tag of this one is the {@link NotAuthenticatedTag}
+ *
+ * <p>Equivalent to {@link org.apache.shiro.web.tags.AuthenticatedTag}</p>
  *
  * @author lijun
  * @constructor
  */
-class HasAnyRolesTag : RoleTag() {
+class AuthenticatedTag : SecureTag() {
 
-    override fun showTagBody(roleNames: String): Boolean {
-        var hasAnyRole: Boolean = false
-
+    override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
         val subject: Subject? = getSubject()
 
-        if (null != subject) {
-            roleNames.split(ROLE_NAMES_DELIMETER).forEach {
-                if (subject.hasRole(it.trim())) {
-                    hasAnyRole = true
-
-                    return@forEach
-                }
-            }
+        if (null != subject && subject.isAuthenticated) {
+            renderBody(env, body)
         }
-
-        return hasAnyRole
-    }
-
-    companion object {
-
-        private val ROLE_NAMES_DELIMETER: String = ","
-
     }
 
 }

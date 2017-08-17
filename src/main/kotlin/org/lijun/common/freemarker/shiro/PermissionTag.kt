@@ -17,12 +17,14 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 import freemarker.core.Environment
 import freemarker.template.TemplateDirectiveBody
+import freemarker.template.TemplateException
 import freemarker.template.TemplateModelException
 import org.apache.commons.lang3.StringUtils
+import org.apache.shiro.subject.Subject
 
 /**
  * <p>Equivalent to {@link org.apache.shiro.web.tags.PermissionTag}</p>
@@ -32,7 +34,7 @@ import org.apache.commons.lang3.StringUtils
  */
 abstract class PermissionTag : SecureTag() {
 
-    @Throws(TemplateModelException::class)
+    @Throws(TemplateException::class)
     override fun verifyParameters(params: MutableMap<Any?, Any?>?) {
         val permission: String? = getName(params)
 
@@ -42,20 +44,26 @@ abstract class PermissionTag : SecureTag() {
     }
 
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
-        val permission: String = getName(params)!!
+        val permission: String? = getName(params)
 
-        val show: Boolean = showTagBody(permission)
+        val show: Boolean = showTagBody(permission!!)
 
         if (show) {
             renderBody(env, body)
         }
     }
 
-    protected fun isPermitted(permission: String): Boolean {
-        return null != getSubject() && getSubject()!!.isPermitted(permission)
-    }
+    abstract fun showTagBody(permission: String): Boolean
 
-    protected abstract fun showTagBody(permission: String): Boolean
+    protected fun isPermitted(permission: String): Boolean {
+        val subject: Subject? = getSubject()
+
+        if (null != subject) {
+            return subject.isPermitted(permission)
+        }
+
+        return false
+    }
 
     private fun getName(params: MutableMap<Any?, Any?>?): String? = getParam(params, "name")
 

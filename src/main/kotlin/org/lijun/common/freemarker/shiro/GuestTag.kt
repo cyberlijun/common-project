@@ -17,18 +17,13 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 /**
- * <p>Equivalent to {@link org.apache.shiro.web.tags.HasRoleTag}</p>
+ *
  *
  * @author lijun
  * @constructor
  */
-class HasRoleTag : RoleTag() {
-
-    override fun showTagBody(roleNames: String): Boolean {
-        return getSubject() != null && getSubject()!!.hasRole(roleNames)
-    }
-
+class GuestTag {
 }

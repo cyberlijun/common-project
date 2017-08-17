@@ -17,36 +17,32 @@
  * limitations under the License.
  */
 
-package org.lijun.common.shiro
+package org.lijun.common.freemarker.shiro
 
 import freemarker.core.Environment
 import freemarker.template.TemplateDirectiveBody
+import freemarker.template.TemplateException
+import java.io.IOException
 
 /**
- * Freemarker tag that renders the tag body only if the current user has <em>not</em> executed a successful authentication
- * attempt <em>during their current session</em>.
- *
- * <p>The logically opposite tag of this one is the {@link org.apache.shiro.web.tags.AuthenticatedTag}.
- *
- * <p>Equivalent to {@link org.apache.shiro.web.tags.NotAuthenticatedTag}</p>
+ * <p>Equivalent to {@link org.apache.shiro.web.tags.RoleTag}</p>
  *
  * @author lijun
  * @constructor
  */
-class NotAuthenticatedTag : SecureTag() {
+abstract class RoleTag : SecureTag() {
 
+    @Throws(TemplateException::class, IOException::class)
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
-        if (null == getSubject() || getSubject()!!.isAuthenticated.not()) {
-            if (logger.isDebugEnabled) {
-                logger.debug("Subject does not exist or is not authenticated. Tag body will be evaluated.")
-            }
+        val show: Boolean = showTagBody(getName(params))
 
+        if (show) {
             renderBody(env, body)
-        } else {
-            if (logger.isDebugEnabled) {
-                logger.debug("Subject exists and is authenticated. Tag body will not be evaluated.")
-            }
         }
     }
+
+    abstract fun showTagBody(roleName: String?): Boolean
+
+    private fun getName(params: MutableMap<Any?, Any?>?): String? = getParam(params, "name")
 
 }
