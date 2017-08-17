@@ -19,6 +19,7 @@
 
 package org.lijun.common.exception
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.lijun.common.enums.WechatErrorType
 import org.lijun.common.util.Constants
 import java.io.Serializable
@@ -42,11 +43,13 @@ class WechatErrorDetail : Serializable {
     /**
      * 错误代码
      */
+    @JsonProperty("errcode")
     var errorCode: String? = null
 
     /**
      * 错误消息
      */
+    @JsonProperty("errmsg")
     var errorMsg: String? = null
 
     constructor()
