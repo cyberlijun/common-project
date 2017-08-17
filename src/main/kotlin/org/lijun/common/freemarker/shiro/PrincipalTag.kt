@@ -25,8 +25,6 @@ import freemarker.template.TemplateException
 import freemarker.template.TemplateModelException
 import org.apache.commons.lang3.StringUtils
 import org.apache.shiro.subject.Subject
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.beans.BeanInfo
 import java.beans.IntrospectionException
 import java.beans.Introspector
@@ -50,8 +48,6 @@ import java.io.IOException
  * @constructor
  */
 class PrincipalTag : SecureTag() {
-
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @Throws(TemplateException::class, IOException::class)
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
