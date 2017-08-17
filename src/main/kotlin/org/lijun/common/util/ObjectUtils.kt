@@ -20,6 +20,7 @@
 package org.lijun.common.util
 
 import org.apache.commons.lang3.ClassUtils
+import org.apache.commons.lang3.StringUtils
 import java.lang.reflect.AccessibleObject
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -35,6 +36,20 @@ object ObjectUtils {
      * 拷贝对象属性
      * @param destnation 目标对象
      * @param origional 原始对象
+     * @throws SecurityException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    @JvmStatic
+    @Throws(SecurityException::class,
+            IllegalArgumentException::class,
+            IllegalAccessException::class)
+    fun copyProperties(destnation: Any, origional: Any) = copyProperties(destnation, origional, StringUtils.EMPTY)
+
+    /**
+     * 拷贝对象属性
+     * @param destnation 目标对象
+     * @param origional 原始对象
      * @param ignoreProperties 忽略的属性
      * @throws SecurityException
      * @throws IllegalArgumentException
@@ -44,7 +59,7 @@ object ObjectUtils {
     @Throws(SecurityException::class,
             IllegalArgumentException::class,
             IllegalAccessException::class)
-    fun copyProperties(destnation: Any, origional: Any, vararg ignoreProperties: String? = arrayOf()) {
+    fun copyProperties(destnation: Any, origional: Any, vararg ignoreProperties: String) {
         var destnationFields: Array<Field> = addSuperClassFields(destnation.javaClass::class.java, destnation.javaClass.declaredFields)
         var origionalFields: Array<Field> = addSuperClassFields(origional.javaClass, origional.javaClass.declaredFields)
 
@@ -56,11 +71,11 @@ object ObjectUtils {
             val returnType: String = origField.type.name
 
             destnationFields.forEach innerLoop@ { destField ->
-                if (Modifier.isFinal(origField.modifiers) || Modifier.isFinal(destField.modifiers)) {
+                if (Modifier.isFinal(origField.modifiers) || Modifier.isFinal(destField.modifiers) || ignoreProperties.contains(destField.name)) {
                     return@innerLoop
                 }
 
-                if (name == destField.name && returnType == destField.type.name && ignoreProperties.contains(destField.name).not()) {
+                if (name == destField.name && returnType == destField.type.name ) {
                     val value: Any? = origField.get(origional)
 
                     destField.set(destnation, value)
