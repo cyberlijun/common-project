@@ -60,7 +60,7 @@ object ObjectUtils {
                 }
 
                 if (name.equals(destField.name) && returnType.equals(destField.type.name)) {
-                    val value: Any = origField.get(origional)
+                    val value: Any? = origField.get(origional)
 
                     destField.set(destnation, value)
                 }
