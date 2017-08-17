@@ -19,30 +19,33 @@
 
 package org.lijun.common.freemarker.shiro
 
-import freemarker.core.Environment
-import freemarker.template.TemplateDirectiveBody
-import org.apache.shiro.subject.Subject
+import freemarker.ext.beans.BeansWrapperBuilder
+import freemarker.template.Configuration
+import freemarker.template.ObjectWrapper
+import freemarker.template.SimpleHash
 
 /**
- * JSP tag that renders the tag body if the current user <em>is not</em> known to the system, either because they
- * haven't logged in yet, or because they have no 'RememberMe' identity.
+ * Shortcut for injecting the tags into Freemarker
  *
- * <p>The logically opposite tag of this one is the {@link UserTag}.  Please read that class's JavaDoc as it explains
- * more about the differences between Authenticated/Unauthenticated and User/Guest semantic differences.
- *
- * <p>Equivalent to {@link org.apache.shiro.web.tags.GuestTag}</p>
+ * <p>Usage: cfg.setSharedVeriable("shiro", new ShiroTags());</p>
  *
  * @author lijun
  * @constructor
+ * @property wrapper
  */
-class GuestTag : SecureTag() {
+class ShiroTags(val wrapper: ObjectWrapper) : SimpleHash(wrapper) {
 
-    override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
-        val subject: Subject? = getSubject()
-
-        if (null == subject || null == subject.principal) {
-            renderBody(env, body)
-        }
+    init {
+        put("authenticated", AuthenticatedTag())
+        put("guest", GuestTag())
+        put("hasAnyRoles", HasAnyRolesTag())
+        put("hasPermission", HasPermissionTag())
+        put("hasRole", HasRoleTag())
+        put("lacksPermission", LacksPermissionTag())
+        put("lacksRole", LacksRoleTag())
+        put("notAuthenticated", NotAuthenticatedTag())
+        put("principal", PrincipalTag())
+        put("user", UserTag())
     }
 
 }

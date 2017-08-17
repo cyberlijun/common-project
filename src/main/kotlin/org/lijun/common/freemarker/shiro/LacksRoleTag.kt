@@ -19,30 +19,20 @@
 
 package org.lijun.common.freemarker.shiro
 
-import freemarker.core.Environment
-import freemarker.template.TemplateDirectiveBody
 import org.apache.shiro.subject.Subject
 
 /**
- * JSP tag that renders the tag body if the current user <em>is not</em> known to the system, either because they
- * haven't logged in yet, or because they have no 'RememberMe' identity.
- *
- * <p>The logically opposite tag of this one is the {@link UserTag}.  Please read that class's JavaDoc as it explains
- * more about the differences between Authenticated/Unauthenticated and User/Guest semantic differences.
- *
- * <p>Equivalent to {@link org.apache.shiro.web.tags.GuestTag}</p>
+ * <p>Equivalent to {@link org.apache.shiro.web.tags.LacksRoleTag}</p>
  *
  * @author lijun
  * @constructor
  */
-class GuestTag : SecureTag() {
+class LacksRoleTag : RoleTag() {
 
-    override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
+    override fun showTagBody(roleName: String?): Boolean {
         val subject: Subject? = getSubject()
 
-        if (null == subject || null == subject.principal) {
-            renderBody(env, body)
-        }
+        return (null != subject && subject.hasRole(roleName)).not()
     }
 
 }

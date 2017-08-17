@@ -24,23 +24,22 @@ import freemarker.template.TemplateDirectiveBody
 import org.apache.shiro.subject.Subject
 
 /**
- * JSP tag that renders the tag body if the current user <em>is not</em> known to the system, either because they
- * haven't logged in yet, or because they have no 'RememberMe' identity.
+ * Freemarker tag that renders the tag body only if the current user has <em>not</em> executed a successful authentication
+ * attempt <em>during their current session</em>.
  *
- * <p>The logically opposite tag of this one is the {@link UserTag}.  Please read that class's JavaDoc as it explains
- * more about the differences between Authenticated/Unauthenticated and User/Guest semantic differences.
+ * <p>The logically opposite tag of this one is the {@link org.apache.shiro.web.tags.AuthenticatedTag}.
  *
- * <p>Equivalent to {@link org.apache.shiro.web.tags.GuestTag}</p>
+ * <p>Equivalent to {@link org.apache.shiro.web.tags.NotAuthenticatedTag}</p>
  *
  * @author lijun
  * @constructor
  */
-class GuestTag : SecureTag() {
+class NotAuthenticatedTag : SecureTag() {
 
     override fun render(env: Environment?, params: MutableMap<Any?, Any?>?, body: TemplateDirectiveBody?) {
         val subject: Subject? = getSubject()
 
-        if (null == subject || null == subject.principal) {
+        if (null == subject || subject.isAuthenticated.not()) {
             renderBody(env, body)
         }
     }
