@@ -52,13 +52,24 @@ object ExcelUtils {
      * 将数据导出到Excel
      * @param data 要导出的数据
      * @param sheetName sheet名称
+     * @return
+     * @throws Exception
+     */
+    @JvmStatic
+    @Throws(Exception::class)
+    fun <T> exportData2Excel(data: List<T>, sheetName: String): InputStream = exportData2Excel(data, sheetName, false)
+
+    /**
+     * 将数据导出到Excel
+     * @param data 要导出的数据
+     * @param sheetName sheet名称
      * @param writeNoHead 是否写编号列
      * @return
      * @throws Exception
      */
     @JvmStatic
     @Throws(Exception::class)
-    fun <T> exportData2Excel(data: List<T>, sheetName: String, writeNoHead: Boolean? = false): InputStream {
+    fun <T> exportData2Excel(data: List<T>, sheetName: String, writeNoHead: Boolean): InputStream {
         val out: ByteArrayOutputStream = ByteArrayOutputStream(1024 * 8)
 
         val wb: WritableWorkbook = Workbook.createWorkbook(out)
@@ -69,7 +80,7 @@ object ExcelUtils {
 
         var heads: List<ExcelHead> = getHeads(clazz)
 
-        if (writeNoHead!!) {
+        if (writeNoHead) {
             heads += ExcelHead("序号", 0, StringUtils.EMPTY)
         }
 
