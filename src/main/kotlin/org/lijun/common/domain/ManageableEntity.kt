@@ -49,7 +49,7 @@ abstract class ManageableEntity : BaseEntity() {
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty
-    @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN)
+    @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN, timezone = Constants.DEFAULT_TIME_ZONE)
     var createDate: Date? = null
 
     /**
@@ -58,7 +58,7 @@ abstract class ManageableEntity : BaseEntity() {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty
-    @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN)
+    @JsonFormat(pattern = Constants.DEFAULT_TIMESTAPM_PATTERN, timezone = Constants.DEFAULT_TIME_ZONE)
     var updateDate: Date? = null
 
 }

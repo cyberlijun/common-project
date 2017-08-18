@@ -131,4 +131,9 @@ object Constants {
      */
     const val FLASH_MESSAGE_KEY: String = "message"
 
+    /**
+     * 默认时区
+     */
+    const val DEFAULT_TIME_ZONE: String = "GMT+8"
+
 }
