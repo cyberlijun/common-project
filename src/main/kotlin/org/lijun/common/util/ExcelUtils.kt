@@ -26,15 +26,18 @@ import jxl.write.WritableWorkbook
 import jxl.write.WriteException
 import jxl.write.biff.RowsExceededException
 import org.apache.commons.beanutils.PropertyUtils
+import org.apache.commons.io.IOUtils
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.commons.lang3.ClassUtils
 import org.apache.commons.lang3.StringUtils
 import org.lijun.common.annotation.ExcelResource
 import org.lijun.common.vo.ExcelHead
 import java.io.ByteArrayInputStream
+import java.io.FileOutputStream
 import java.io.InputStream
+import java.io.OutputStream
+import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 import java.util.*
 
 /**
@@ -46,19 +49,6 @@ import java.util.*
 object ExcelUtils {
 
     /**
-     * 导出数据到Excel文件
-     * @param data 要导出的数据
-     * @param sheetName sheet名称
-     * @return
-     * @throws Exception
-     */
-    @JvmStatic
-    @Throws(Exception::class)
-    fun <T> exportData2Excel(data: List<T>, sheetName: String): InputStream {
-        return exportData2Excel(data, sheetName, false)
-    }
-
-    /**
      * 将数据导出到Excel
      * @param data 要导出的数据
      * @param sheetName sheet名称
@@ -68,7 +58,7 @@ object ExcelUtils {
      */
     @JvmStatic
     @Throws(Exception::class)
-    fun <T> exportData2Excel(data: List<T>, sheetName: String, writeNoHead: Boolean): InputStream {
+    fun <T> exportData2Excel(data: List<T>, sheetName: String, writeNoHead: Boolean = false): InputStream {
         val out: ByteArrayOutputStream = ByteArrayOutputStream(1024 * 8)
 
         val wb: WritableWorkbook = Workbook.createWorkbook(out)
@@ -108,10 +98,10 @@ object ExcelUtils {
     private fun getHeads(clazz: Class<*>): List<ExcelHead> {
         var heads: List<ExcelHead> = listOf()
 
-        val methods: Array<Method> = clazz.declaredMethods
+        val fields: Array<Field> = clazz.declaredFields
 
-        methods.forEach {
-            if (it.name.startsWith(Constants.GET_METHOD_PREFIX) && it.isAnnotationPresent(ExcelResource::class.java)) {
+        fields.forEach {
+            if (it.isAnnotationPresent(ExcelResource::class.java)) {
                 val resource: ExcelResource = it.getAnnotation(ExcelResource::class.java)
 
                 heads += ExcelHead(resource.title, resource.order, resource.property)
@@ -169,4 +159,29 @@ object ExcelUtils {
         }
     }
 
+}
+
+class Student {
+
+    @ExcelResource(title = "编号", property = "id", order = 1)
+    var id: Long? = null
+
+    @ExcelResource(title = "姓名", property = "name", order = 2)
+    var name: String? = null
+
+}
+
+fun main(args: Array<String>) {
+    val s: Student = Student()
+
+    s.id = 1
+    s.name = "张三"
+
+    val students: List<Student> = listOf(s)
+
+    val input: InputStream = ExcelUtils.exportData2Excel(students, "学生信息")
+
+    val out: OutputStream = FileOutputStream("/Users/lijun/test.xls")
+
+    IOUtils.copy(input, out)
 }
