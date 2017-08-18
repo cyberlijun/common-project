@@ -160,28 +160,3 @@ object ExcelUtils {
     }
 
 }
-
-class Student {
-
-    @ExcelResource(title = "编号", property = "id", order = 1)
-    var id: Long? = null
-
-    @ExcelResource(title = "姓名", property = "name", order = 2)
-    var name: String? = null
-
-}
-
-fun main(args: Array<String>) {
-    val s: Student = Student()
-
-    s.id = 1
-    s.name = "张三"
-
-    val students: List<Student> = listOf(s)
-
-    val input: InputStream = ExcelUtils.exportData2Excel(students, "学生信息")
-
-    val out: OutputStream = FileOutputStream("/Users/lijun/test.xls")
-
-    IOUtils.copy(input, out)
-}
