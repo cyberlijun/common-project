@@ -187,8 +187,9 @@ abstract class BaseController : ServletContextAware {
      * @param filename 文件名
      * @param input
      * @param response
-     * @throws
+     * @throws Exception
      */
+    @Throws(Exception::class)
     protected open fun export(contentType: String = Constants.EXCEL_CONTENT_TYPE, filename: String, input: InputStream, response: HttpServletResponse) {
         var out: OutputStream? = null
 
