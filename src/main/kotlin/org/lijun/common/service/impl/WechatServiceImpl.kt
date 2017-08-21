@@ -211,7 +211,7 @@ open class WechatServiceImpl : WechatService {
      */
     @Throws(WechatException::class)
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    override fun getOAuthOpenId(code: String): String {
+    override fun getOAuthOpenId(code: String): String? {
         val response: HttpResponseWrapper<String> = HttpUtils.get(WechatApiUrls.getOAuthAccessTokenUrl(code))
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {

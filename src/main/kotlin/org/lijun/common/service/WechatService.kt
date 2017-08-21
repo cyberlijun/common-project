@@ -76,6 +76,6 @@ interface WechatService {
      * @throws WechatException
      */
     @Throws(WechatException::class)
-    fun getOAuthOpenId(code: String): String
+    fun getOAuthOpenId(code: String): String?
 
 }
