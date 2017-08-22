@@ -20,6 +20,7 @@
 package org.lijun.common.wechat.util
 
 import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
 import org.lijun.common.util.SystemUtils
 import java.util.*
@@ -44,7 +45,7 @@ object WechatSignUtils {
 
         Arrays.sort(array)
 
-        return StringUtils.equals(signature, DigestUtils.sha1Hex(StringUtils.join(array)))
+        return StringUtils.equals(signature, DigestUtils.sha1Hex(StringUtils.join(array, StringUtils.EMPTY)))
     }
 
     /**
