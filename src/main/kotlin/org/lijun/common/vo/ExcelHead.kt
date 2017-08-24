@@ -28,7 +28,7 @@ package org.lijun.common.vo
  * @property property 要访问对象的属性，支持嵌套属性
  * @constructor
  */
-data class ExcelHead(var title: String?, var order: Int = Int.MAX_VALUE, var property: String?) : Comparable<ExcelHead> {
+data class ExcelHead(var title: String?, private var order: Int = Int.MAX_VALUE, var property: String?) : Comparable<ExcelHead> {
 
     /**
      * Compares this object with the specified object for order. Returns zero if this object is equal

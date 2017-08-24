@@ -130,7 +130,7 @@ object WebUtils {
 
         var path: String = request.requestURL.toString()
 
-        val queryString: String = request.queryString
+        val queryString: String? = request.queryString
 
         if (StringUtils.isNotBlank(queryString)) {
             path = "$path?$queryString"

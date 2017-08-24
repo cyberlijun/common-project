@@ -22,8 +22,6 @@ package org.lijun.common.web.interceptor
 import com.google.common.net.HttpHeaders
 import org.apache.commons.lang3.StringUtils
 import org.lijun.common.util.WebUtils
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -35,17 +33,13 @@ import javax.servlet.http.HttpServletResponse
  * @param failRedirectUrl 当不是使用微信内置浏览器访问时跳转的URL
  * @constructor
  */
-open class WechatBrowserInterceptor(var failRedirectUrl: String) : HandlerInterceptorAdapter() {
-
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+open class WechatBrowserInterceptor(private val failRedirectUrl: String) : HandlerInterceptorAdapter() {
 
     @Throws(Exception::class)
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?): Boolean {
         val agent: String = request?.getHeader(HttpHeaders.USER_AGENT.toLowerCase())!!
 
-        logger.info("WechatBrowserInterceptor拦截到的用户Agent为：$agent")
-
-        if (StringUtils.isNotBlank(agent) && StringUtils.INDEX_NOT_FOUND != StringUtils.indexOf(agent, "micromessenger")) {
+        if (StringUtils.isNotBlank(agent) && StringUtils.INDEX_NOT_FOUND != StringUtils.indexOf(agent.toLowerCase(), "micromessenger")) {
             return true
         }
 

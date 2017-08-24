@@ -102,7 +102,7 @@ object MailUtils {
         helper.setText(content.toString(), true)
         helper.setSentDate(Date())
 
-        if (null != attachment && null != attachment.dataSource) {
+        if (null != attachment?.dataSource) {
             helper.addAttachment(attachment.name, attachment.dataSource)
         }
 

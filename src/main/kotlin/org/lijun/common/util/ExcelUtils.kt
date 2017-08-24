@@ -26,16 +26,13 @@ import jxl.write.WritableWorkbook
 import jxl.write.WriteException
 import jxl.write.biff.RowsExceededException
 import org.apache.commons.beanutils.PropertyUtils
-import org.apache.commons.io.IOUtils
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.commons.lang3.ClassUtils
 import org.apache.commons.lang3.StringUtils
 import org.lijun.common.annotation.ExcelResource
 import org.lijun.common.vo.ExcelHead
 import java.io.ByteArrayInputStream
-import java.io.FileOutputStream
 import java.io.InputStream
-import java.io.OutputStream
 import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.util.*
@@ -158,10 +155,10 @@ object ExcelUtils {
                 var value: Any? = null
 
                 if (StringUtils.isNotBlank(head.property)) {
-                    if (StringUtils.INDEX_NOT_FOUND != head.property?.indexOf(".")) {
-                        value = PropertyUtils.getNestedProperty(t, head.property)
+                    value = if (StringUtils.INDEX_NOT_FOUND != head.property?.indexOf(".")) {
+                        PropertyUtils.getNestedProperty(t, head.property)
                     } else {
-                        value = PropertyUtils.getProperty(t, head.property)
+                        PropertyUtils.getProperty(t, head.property)
                     }
                 }
 

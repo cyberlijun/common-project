@@ -175,9 +175,7 @@ open class WechatServiceImpl : WechatService {
 
                 throw WechatException(wechatError)
             } else {
-                val ticket: String = MapUtils.getString(map, "ticket")
-
-                return ticket
+                return MapUtils.getString(map, "ticket")
             }
         }
 

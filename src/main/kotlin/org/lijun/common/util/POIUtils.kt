@@ -38,14 +38,14 @@ object POIUtils {
      */
     @JvmStatic
     fun getCellValue(cell: Cell): String {
-        when (cell.cellType) {
-            Cell.CELL_TYPE_BLANK -> return StringUtils.EMPTY
-            Cell.CELL_TYPE_BOOLEAN -> return cell.booleanCellValue.toString()
-            Cell.CELL_TYPE_ERROR -> return Constants.STATUS_ERROR
-            Cell.CELL_TYPE_FORMULA -> return getFormulaValue(cell)
-            Cell.CELL_TYPE_NUMERIC -> return getNumericValue(cell)
-            Cell.CELL_TYPE_STRING -> return cell.richStringCellValue.toString()
-            else -> return ""
+        return when (cell.cellType) {
+            Cell.CELL_TYPE_BLANK -> StringUtils.EMPTY
+            Cell.CELL_TYPE_BOOLEAN -> cell.booleanCellValue.toString()
+            Cell.CELL_TYPE_ERROR -> Constants.STATUS_ERROR
+            Cell.CELL_TYPE_FORMULA -> getFormulaValue(cell)
+            Cell.CELL_TYPE_NUMERIC -> getNumericValue(cell)
+            Cell.CELL_TYPE_STRING -> cell.richStringCellValue.toString()
+            else -> ""
         }
     }
 
@@ -55,7 +55,7 @@ object POIUtils {
      * @return
      */
     @JvmStatic
-    private fun  getFormulaValue(cell: Cell): String {
+    private fun getFormulaValue(cell: Cell): String {
         val wb: Workbook = cell.sheet.workbook
 
         val creationHelper: CreationHelper = wb.creationHelper
@@ -71,7 +71,7 @@ object POIUtils {
      * @return
      */
     @JvmStatic
-    private fun  getNumericValue(cell: Cell): String {
+    private fun getNumericValue(cell: Cell): String {
         if (DateUtil.isCellDateFormatted(cell)) {
             return DateFormat.getInstance().format(cell.dateCellValue)
         }

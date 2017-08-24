@@ -42,7 +42,6 @@ import javax.net.ssl.SSLContext
 import org.apache.http.entity.StringEntity
 import org.lijun.common.support.HttpResponseWrapper
 
-
 /**
  * HTTP请求工具类，支持HTTPS
  *

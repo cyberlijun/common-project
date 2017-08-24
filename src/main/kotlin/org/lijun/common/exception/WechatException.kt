@@ -26,4 +26,4 @@ package org.lijun.common.exception
  * @property error 错误详情
  * @constructor
  */
-class WechatException(var error: WechatErrorDetail) : RuntimeException()
+class WechatException(private var error: WechatErrorDetail) : RuntimeException()

@@ -36,7 +36,7 @@ import java.io.IOException
  * @property charset 字符集
  * @constructor
  */
-class StringResponseHandler(val charset: String) : ResponseHandler<HttpResponseWrapper<String>> {
+class StringResponseHandler(private val charset: String) : ResponseHandler<HttpResponseWrapper<String>> {
 
     constructor() : this(Constants.DEFAULT_CHARSET)
 

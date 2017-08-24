@@ -72,7 +72,7 @@ object XmlUtils {
     fun <T> fromXml(xml: String, clazz: Class<T>): Any {
         Assert.hasText(xml, "XML数据为空")
 
-        val xstream = createXStream()
+        val xstream: XStream = createXStream()
 
         xstream.processAnnotations(clazz)
 
@@ -90,7 +90,7 @@ object XmlUtils {
     fun <T> fromXml(xml: String, superClass: Class<*>, subClass: Class<*>): Any {
         Assert.hasText(xml, "XML数据为空")
 
-        val xstream = createXStream()
+        val xstream: XStream = createXStream()
 
         xstream.addDefaultImplementation(subClass, superClass)
 
@@ -143,7 +143,7 @@ object XmlUtils {
      */
     @JvmStatic
     @Throws(DocumentException::class)
-    fun getRootElement(xml: String) = DocumentHelper.parseText(xml).rootElement
+    fun getRootElement(xml: String): Element? = DocumentHelper.parseText(xml).rootElement
 
     /**
      * 将XML转换为Map
@@ -158,10 +158,14 @@ object XmlUtils {
 
         var map: Map<String, String> = mapOf()
 
-        val elements: List<Element> = getRootElement(xml).elements() as List<Element>
+        val root: Element? = getRootElement(xml)
 
-        elements.forEach {
-            map += it.name to it.textTrim
+        if (null != root) {
+            val elements: List<Element> = getRootElement(xml)?.elements() as List<Element>
+
+            elements.forEach {
+                map += it.name to it.textTrim
+            }
         }
 
         return map

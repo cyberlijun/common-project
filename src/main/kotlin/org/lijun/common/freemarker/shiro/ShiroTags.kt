@@ -33,7 +33,7 @@ import freemarker.template.SimpleHash
  * @constructor
  * @property wrapper
  */
-class ShiroTags(val wrapper: ObjectWrapper) : SimpleHash(wrapper) {
+class ShiroTags(private val wrapper: ObjectWrapper) : SimpleHash(wrapper) {
 
     init {
         put("authenticated", AuthenticatedTag())

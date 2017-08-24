@@ -32,5 +32,4 @@ import java.io.Serializable
  * @param ID 主键
  */
 @NoRepositoryBean
-interface BaseRepository<T, ID : Serializable> : JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
-}
+interface BaseRepository<T, ID : Serializable> : JpaRepository<T, ID>, JpaSpecificationExecutor<T>
