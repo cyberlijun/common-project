@@ -29,4 +29,5 @@ package org.lijun.common.annotation
  */
 @Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
+@MustBeDocumented
 annotation class ExcelResource(val title: String, val order: Int = Int.MAX_VALUE, val property: String)
