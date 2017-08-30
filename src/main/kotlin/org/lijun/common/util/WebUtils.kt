@@ -148,4 +148,11 @@ object WebUtils {
         return (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
     }
 
+    /**
+     * 获得Session ID
+     * @return
+     */
+    @JvmStatic
+    fun getSessionId(): String = getRequest().session.id
+
 }
