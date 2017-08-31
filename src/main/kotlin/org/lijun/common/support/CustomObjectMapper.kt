@@ -51,7 +51,6 @@ class CustomObjectMapper : ObjectMapper {
         })
 
         configure(SerializationFeature.INDENT_OUTPUT, true)
-        configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true)
     }
 
 }
