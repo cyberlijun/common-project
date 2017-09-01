@@ -101,11 +101,15 @@ object IdentityUtils {
      */
     @JvmStatic
     fun validate(identity: String): Boolean {
-        if (validate18(identity)) return true
+        try {
+            if (validate18(identity)) return true
 
-        if (validate15(identity)) return true
+            if (validate15(identity)) return true
 
-        return false
+            return false
+        } catch (e: Exception) {
+            return false
+        }
     }
 
     /**
@@ -162,7 +166,7 @@ object IdentityUtils {
             return StringUtils.equalsIgnoreCase(checkCode, identity.substring(17))
         }
 
-        throw IllegalArgumentException("身份证号长度无效")
+        return false
     }
 
     /**
@@ -194,7 +198,7 @@ object IdentityUtils {
                                 Integer.valueOf(identity.substring(6, 12).substring(4, 6)))
         }
 
-        throw IllegalArgumentException("身份证号长度无效")
+        return false
     }
 
     /**
