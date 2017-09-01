@@ -17,42 +17,39 @@
  * limitations under the License.
  */
 
-package org.lijun.common.support
+package org.lijun.common.deserializer
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.JsonSerializer
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonNode
 import org.apache.commons.lang3.StringUtils
+import java.io.IOException
 
 /**
- * 自定义ObjectMapper
+ * JsonDeserializer - TagidListDeserializer
  *
  * @author lijun
  * @constructor
  */
-class CustomObjectMapper : ObjectMapper {
+class TagidListDeserializer : JsonDeserializer<String>() {
 
-    constructor() : this(null)
+    @Throws(IOException::class, JsonProcessingException::class)
+    override fun deserialize(jp: JsonParser?, ctx: DeserializationContext?): String {
+        val node: JsonNode? = jp?.codec?.readTree(jp)
 
-    constructor(include: JsonInclude.Include?) {
-        if (null != include) {
-            setSerializationInclusion(include)
-        }
+        val str: String? = node?.asText()
 
-        this.serializerProvider.setNullValueSerializer(object : JsonSerializer<Any>() {
-
-            override fun serialize(value: Any?, jgen: JsonGenerator?, provider: SerializerProvider?) {
-                jgen?.writeString(StringUtils.EMPTY)
+        if (null != str) {
+            if (StringUtils.isBlank(str)) {
+                return "[]"
             }
 
-        })
+            return str
+        }
 
-        configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
-        configure(SerializationFeature.INDENT_OUTPUT, true)
+        throw IOException()
     }
 
 }

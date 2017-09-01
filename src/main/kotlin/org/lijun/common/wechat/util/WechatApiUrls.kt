@@ -123,4 +123,13 @@ object WechatApiUrls {
         return "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${AccessTokenContext.get().accessToken}"
     }
 
+    /**
+     * 批量获取用户基本信息接口URL
+     * @return
+     */
+    @JvmStatic
+    fun getBatchFetchUserInfoUrl(): String {
+        return "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=${AccessTokenContext.get().accessToken}"
+    }
+
 }

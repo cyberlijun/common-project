@@ -72,6 +72,11 @@ enum class WechatErrorType {
     CREATE_MENU_ERROR,
 
     /**
+     * 批量抓取用户信息错误
+     */
+    BATCH_FETCH_USER_INFO_ERROR,
+
+    /**
      * 系统异常
      */
     SYSTEM_ERROR

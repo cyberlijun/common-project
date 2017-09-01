@@ -21,6 +21,7 @@ package org.lijun.common.service
 
 import org.lijun.common.exception.WechatException
 import org.lijun.common.wechat.vo.AccessToken
+import org.lijun.common.wechat.vo.UserInfoList
 import org.lijun.common.wechat.vo.WechatUserInfo
 
 /**
@@ -77,5 +78,14 @@ interface WechatService {
      */
     @Throws(WechatException::class)
     fun getOAuthOpenId(code: String): String?
+
+    /**
+     * 批量抓取用户信息
+     * @param openIds
+     * @return
+     * @throws WechatException
+     */
+    @Throws(WechatException::class)
+    fun batchFetchUserInfo(openIds: List<String>): UserInfoList
 
 }

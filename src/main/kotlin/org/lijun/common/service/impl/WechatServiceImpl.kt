@@ -40,6 +40,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 import org.lijun.common.wechat.context.JsApiTicketContext
+import org.lijun.common.wechat.util.WechatUtils
+import org.lijun.common.wechat.vo.UserInfoList
 
 /**
  * Service - WechatServiceImpl
@@ -224,6 +226,33 @@ open class WechatServiceImpl : WechatService {
         }
 
         throw WechatException(WechatErrorDetail.createSystemError("通过code换取网页授权access_token时发生错误！"))
+    }
+
+    /**
+     * 批量抓取用户信息
+     */
+    @Throws(WechatException::class)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    override fun batchFetchUserInfo(openIds: List<String>): UserInfoList {
+        val json: String = WechatUtils.getBatchFetchUserInfoJson(openIds)
+
+        logger.info("向微信提交的批量抓取用户信息JSON为：\n$json")
+
+        val response: HttpResponseWrapper<String> = HttpUtils.postJson(WechatApiUrls.getBatchFetchUserInfoUrl(), json)
+
+        if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
+            if (StringUtils.contains(response.content, "errcode")) {
+                val wechatError: WechatErrorDetail = JsonUtils.fromJson(response.content!!, WechatErrorDetail::class.java)
+
+                wechatError.errorType = WechatErrorType.BATCH_FETCH_USER_INFO_ERROR
+
+                throw WechatException(wechatError)
+            } else {
+                return JsonUtils.fromJson(response.content!!, UserInfoList::class.java)
+            }
+        }
+
+        throw WechatException(WechatErrorDetail.createSystemError("批量获取用户基本信息时发生错误！"))
     }
 
 }

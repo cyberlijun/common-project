@@ -45,6 +45,7 @@ class WechatErrorTypeSerializer : JsonSerializer<WechatErrorType>() {
             WechatErrorType.SEND_TEMPLATE_MESSAGE_ERROR -> text = "发送模板消息错误"
             WechatErrorType.DELETE_MENU_ERROR -> text = "删除自定义菜单错误"
             WechatErrorType.CREATE_MENU_ERROR -> text = "创建自定义菜单错误"
+            WechatErrorType.BATCH_FETCH_USER_INFO_ERROR -> text = "批量抓取用户信息错误"
             WechatErrorType.SYSTEM_ERROR -> text = "系统异常"
         }
 
