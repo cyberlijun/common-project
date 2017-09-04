@@ -28,4 +28,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias
  * @constructor
  */
 @XStreamAlias("xml")
-class MenuEventRequestMessage : EventRequestMessage()
+class MenuEventRequestMessage : EventRequestMessage() {
+
+    /**
+     * 菜单ID
+     */
+    var menuId: String? = null
+
+}
