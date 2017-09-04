@@ -33,6 +33,7 @@ class MenuEventRequestMessage : EventRequestMessage() {
     /**
      * 菜单ID
      */
+    @XStreamAlias("MenuId")
     var menuId: String? = null
 
 }
