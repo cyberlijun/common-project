@@ -17,44 +17,41 @@
  * limitations under the License.
  */
 
-package org.lijun.common.wechat.vo
+package org.lijun.common.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.apache.commons.lang3.time.DateUtils
-import java.io.Serializable
 import java.util.*
 
 /**
- * 微信access_token封装
+ * Entity - AccessToken
  *
  * @author lijun
  * @constructor
  */
-class AccessToken : Serializable {
+class AccessToken : BaseEntity() {
 
     /**
-     * 凭证
+     * 微信返回的access_token
      */
     @JsonProperty("access_token")
     var accessToken: String? = null
 
     /**
-     * 凭证有效时间，单位：秒
+     * 过期时间，秒
      */
     @JsonProperty("expires_in")
     var expiresIn: String? = null
 
     /**
-     * 凭证过期时间
+     * 真正的过期时间
      */
-    val expireTime: Date = DateUtils.addMinutes(Date(), 100)
+    var expiresTime: Date? = null
 
     /**
-     * 判断凭证是否已过期
-     * @return
+     * 判断是否过期
      */
     fun isExpired(): Boolean {
-        return this.expireTime.before(Date())
+        return this.expiresTime?.before(Date())!!
     }
 
 }

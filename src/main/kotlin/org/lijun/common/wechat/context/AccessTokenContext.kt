@@ -19,7 +19,7 @@
 
 package org.lijun.common.wechat.context
 
-import org.lijun.common.wechat.vo.AccessToken
+import org.lijun.common.domain.AccessToken
 
 /**
  * AccessToken上下文

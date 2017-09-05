@@ -19,8 +19,12 @@
 
 package org.lijun.common.service.impl
 
+import org.apache.commons.collections.CollectionUtils
 import org.apache.commons.collections.MapUtils
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.apache.ibatis.session.SqlSession
+import org.lijun.common.domain.AccessToken
 import org.lijun.common.service.WechatService
 import org.lijun.common.support.HttpResponseWrapper
 import org.lijun.common.util.HttpUtils
@@ -31,17 +35,17 @@ import org.lijun.common.exception.WechatException
 import org.lijun.common.enums.WechatErrorType
 import org.lijun.common.exception.WechatErrorDetail
 import org.lijun.common.util.EmojiUtils
-import org.springframework.stereotype.Service
+import org.lijun.common.util.SpringContextHolder
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.lijun.common.wechat.context.AccessTokenContext
-import org.lijun.common.wechat.vo.AccessToken
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.util.*
 import org.lijun.common.wechat.context.JsApiTicketContext
 import org.lijun.common.wechat.util.WechatUtils
 import org.lijun.common.wechat.vo.UserInfoList
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Service
 
 /**
  * Service - WechatServiceImpl
@@ -60,8 +64,26 @@ open class WechatServiceImpl : WechatService {
      * @throws WechatException
      */
     @Throws(WechatException::class)
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
     override fun getAccessToken(): AccessToken {
+        val sqlSession: SqlSession = SpringContextHolder.getBean<SqlSession>(SqlSession::class.java)!!
+
+        var accessTokens: List<AccessToken> = sqlSession.selectList("$DOMAIN_NAME.select")
+
+        var accessToken: AccessToken?
+
+        if (CollectionUtils.isNotEmpty(accessTokens)) {
+            accessToken = accessTokens[0]
+
+            if (accessToken.isExpired().not()) {
+                logger.info("access_token未过期，直接返回...")
+
+                return accessToken
+            }
+        }
+
+        logger.info("访问微信服务器获取access_token...")
+
         val response: HttpResponseWrapper<String> = HttpUtils.get(WechatApiUrls.getAccessTokenUrl())
 
         if (response.isSuccess() && StringUtils.isNotBlank(response.content)) {
@@ -74,7 +96,19 @@ open class WechatServiceImpl : WechatService {
                     throw WechatException(wechatError)
                 }
             } else {
-                return JsonUtils.fromJson(response.content!!, AccessToken::class.java)
+                accessToken = JsonUtils.fromJson(response.content!!, AccessToken::class.java)
+
+                accessToken.expiresTime = DateUtils.addMinutes(Date(), 100)
+
+                val count: Long = sqlSession.selectOne("$DOMAIN_NAME.count")!!
+
+                if (0L != count) {
+                    sqlSession.update("$DOMAIN_NAME.update", accessToken)
+                } else {
+                    sqlSession.insert("$DOMAIN_NAME.insert", accessToken)
+                }
+
+                return accessToken
             }
         }
 
@@ -253,6 +287,12 @@ open class WechatServiceImpl : WechatService {
         }
 
         throw WechatException(WechatErrorDetail.createSystemError("批量获取用户基本信息时发生错误！"))
+    }
+
+    companion object {
+
+        private val DOMAIN_NAME: String = AccessToken::class.java.name
+
     }
 
 }

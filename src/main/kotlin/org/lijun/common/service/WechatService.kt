@@ -19,8 +19,8 @@
 
 package org.lijun.common.service
 
+import org.lijun.common.domain.AccessToken
 import org.lijun.common.exception.WechatException
-import org.lijun.common.wechat.vo.AccessToken
 import org.lijun.common.wechat.vo.UserInfoList
 import org.lijun.common.wechat.vo.WechatUserInfo
 

@@ -136,4 +136,9 @@ object Constants {
      */
     const val DEFAULT_TIME_ZONE: String = "GMT+8"
 
+    /**
+     * 微信access_token缓存key
+     */
+    const val ACCESS_TOKEN_KEY: String = "wechat_access_token"
+
 }
