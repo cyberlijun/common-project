@@ -48,7 +48,7 @@ object WechatApiUrls {
      */
     @JvmStatic
     fun getFetchUserInfoUrl(openid: String): String {
-        return "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=$openid&lang=zh_CN"
+        return "https://api.weixin.qq.com/cgi-bin/user/info?access_token=${AccessTokenContext.get().accessToken}&openid=$openid&lang=zh_CN"
     }
 
     /**
