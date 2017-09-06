@@ -19,17 +19,17 @@
 
 package org.lijun.common.util
 
+import org.apache.commons.mail.EmailException
+import org.apache.commons.mail.HtmlEmail
 import org.lijun.common.vo.EmailAttachment
-import org.springframework.mail.MailException
-import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.MimeMessageHelper
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
 import javax.activation.DataSource
 import javax.mail.MessagingException
-import javax.mail.internet.MimeMessage
 import javax.mail.util.ByteArrayDataSource
+import org.lijun.common.util.SpringContextHolder.Companion.getProperty
+import java.util.*
+import javax.mail.internet.InternetAddress
 
 /**
  * 邮件工具类
@@ -38,19 +38,16 @@ import javax.mail.util.ByteArrayDataSource
  */
 object MailUtils {
 
-    private val mailSender: JavaMailSender? = SpringContextHolder.getBean(JavaMailSender::class.java)
-
     /**
      * 发送电子邮件
      * @param to 收件人
      * @param subject 邮件主题
      * @param content 邮件内容
      * @throws MessagingException
-     * @throws MailException
+     * @throws EmailException
      */
     @JvmStatic
-    @Throws(MessagingException::class,
-            MailException::class)
+    @Throws(EmailException::class)
     fun send(to: String, subject: CharSequence, content: CharSequence) {
         doSend(to, subject, content, null)
     }
@@ -64,13 +61,11 @@ object MailUtils {
      * @param attachmentName 附件名
      * @param attachmentDesc 附件描述
      * @throws MessagingException
-     * @throws MailException
+     * @throws EmailException
      * @throws IOException
      */
     @JvmStatic
-    @Throws(MessagingException::class,
-            MailException::class,
-            IOException::class)
+    @Throws(EmailException::class)
     fun send(to: String, subject: CharSequence, content: CharSequence, input: InputStream, attachmentName: String, attachmentDesc: String) {
         val dataSource: DataSource = ByteArrayDataSource(input, Constants.DEFAULT_CONTENT_TYPE)
 
@@ -86,27 +81,39 @@ object MailUtils {
      * @param content 邮件内容
      * @param attachment 附件
      * @throws MessagingException
-     * @throws MailException
+     * @throws EmailException
      */
     @JvmStatic
-    @Throws(MessagingException::class,
-            MailException::class)
+    @Throws(EmailException::class)
     private fun doSend(to: String, subject: CharSequence, content: CharSequence, attachment: EmailAttachment?) {
-        val mimeMessage: MimeMessage? = this.mailSender?.createMimeMessage()
+        val username: String = getProperty("spring.mail.username")
+        val password: String = getProperty("spring.mail.password")
+        val host: String = getProperty("spring.mail.host")
+        val from: String = getProperty("spring.mail.from")
 
-        val helper: MimeMessageHelper = MimeMessageHelper(mimeMessage, true)
+        val port: Int = getProperty("spring.mail.port").toInt()
 
-        helper.setFrom(SpringContextHolder.getProperty("spring.mail.from"))
-        helper.setTo(to)
-        helper.setSubject(subject.toString())
-        helper.setText(content.toString(), true)
-        helper.setSentDate(Date())
+        val ssl: Boolean = getProperty("spring.mail.properties.ssl").toBoolean()
+
+        val email: HtmlEmail = HtmlEmail()
+
+        email.hostName = host
+        email.setSmtpPort(port)
+        email.isSSLOnConnect = ssl
+        email.setAuthentication(username, password)
+        email.setFrom(from)
+        email.setTo(listOf(InternetAddress(to)))
+        email.subject = subject.toString()
+        email.setCharset(Constants.DEFAULT_CHARSET)
+        email.setDebug(true)
+        email.sentDate = Date()
+        email.setHtmlMsg(content.toString())
 
         if (null != attachment?.dataSource) {
-            helper.addAttachment(attachment.name, attachment.dataSource)
+            email.attach(attachment.dataSource, attachment.name, attachment.description)
         }
 
-        this.mailSender?.send(mimeMessage)
+        email.send()
     }
 
 }
