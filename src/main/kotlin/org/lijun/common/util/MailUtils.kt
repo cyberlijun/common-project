@@ -86,6 +86,10 @@ object MailUtils {
     @JvmStatic
     @Throws(EmailException::class)
     private fun doSend(to: String, subject: CharSequence, content: CharSequence, attachment: EmailAttachment?) {
+        System.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
+        System.setProperty("mail.smtp.socketFactory.fallback", "false")
+        System.setProperty("mail.smtp.ssl.enable", "true")
+
         val username: String = getProperty("spring.mail.username")
         val password: String = getProperty("spring.mail.password")
         val host: String = getProperty("spring.mail.host")
@@ -93,13 +97,13 @@ object MailUtils {
 
         val port: Int = getProperty("spring.mail.port").toInt()
 
-        val ssl: Boolean = getProperty("spring.mail.properties.ssl").toBoolean()
+        //val ssl: Boolean = getProperty("spring.mail.properties.ssl").toBoolean()
 
         val email: HtmlEmail = HtmlEmail()
 
         email.hostName = host
         email.setSmtpPort(port)
-        email.isSSLOnConnect = ssl
+        //email.isSSLOnConnect = ssl
         email.setAuthentication(username, password)
         email.setFrom(from)
         email.setTo(listOf(InternetAddress(to)))
