@@ -60,14 +60,15 @@ object MailUtils {
      * @param input 附件输入流
      * @param attachmentName 附件名
      * @param attachmentDesc 附件描述
+     * @param attachmentType 附件类型，ContentType
      * @throws MessagingException
      * @throws EmailException
      * @throws IOException
      */
     @JvmStatic
     @Throws(EmailException::class)
-    fun send(to: String, subject: CharSequence, content: CharSequence, input: InputStream, attachmentName: String, attachmentDesc: String) {
-        val dataSource: DataSource = ByteArrayDataSource(input, Constants.DEFAULT_CONTENT_TYPE)
+    fun send(to: String, subject: CharSequence, content: CharSequence, input: InputStream, attachmentName: String, attachmentDesc: String, attachmentType: String = Constants.DEFAULT_CONTENT_TYPE) {
+        val dataSource: DataSource = ByteArrayDataSource(input, attachmentType)
 
         val attachment: EmailAttachment = EmailAttachment(dataSource, attachmentName, attachmentDesc)
 
@@ -86,9 +87,12 @@ object MailUtils {
     @JvmStatic
     @Throws(EmailException::class)
     private fun doSend(to: String, subject: CharSequence, content: CharSequence, attachment: EmailAttachment?) {
+        // 解决SSL登录问题
         System.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
         System.setProperty("mail.smtp.socketFactory.fallback", "false")
         System.setProperty("mail.smtp.ssl.enable", "true")
+        // 解决附件名过长被截断BUG
+        System.setProperty("mail.mime.splitlongparameters", "false")
 
         val username: String = getProperty("spring.mail.username")
         val password: String = getProperty("spring.mail.password")
