@@ -97,13 +97,10 @@ object MailUtils {
 
         val port: Int = getProperty("spring.mail.port").toInt()
 
-        //val ssl: Boolean = getProperty("spring.mail.properties.ssl").toBoolean()
-
         val email: HtmlEmail = HtmlEmail()
 
         email.hostName = host
         email.setSmtpPort(port)
-        //email.isSSLOnConnect = ssl
         email.setAuthentication(username, password)
         email.setFrom(from)
         email.setTo(listOf(InternetAddress(to)))
