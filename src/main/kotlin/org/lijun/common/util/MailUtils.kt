@@ -39,6 +39,11 @@ import javax.mail.internet.InternetAddress
 object MailUtils {
 
     /**
+     * 使用SSL协议默认端口号
+     */
+    private const val SSL_SMTP_PORT: Int = 465
+
+    /**
      * 发送电子邮件
      * @param to 收件人
      * @param subject 邮件主题
@@ -87,19 +92,20 @@ object MailUtils {
     @JvmStatic
     @Throws(EmailException::class)
     private fun doSend(to: String, subject: CharSequence, content: CharSequence, attachment: EmailAttachment?) {
-        // 解决SSL登录问题
-        System.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
-        System.setProperty("mail.smtp.socketFactory.fallback", "false")
-        System.setProperty("mail.smtp.ssl.enable", "true")
-        // 解决附件名过长被截断BUG
-        System.setProperty("mail.mime.splitlongparameters", "false")
-
         val username: String = getProperty("spring.mail.username")
         val password: String = getProperty("spring.mail.password")
         val host: String = getProperty("spring.mail.host")
         val from: String = getProperty("spring.mail.from")
 
         val port: Int = getProperty("spring.mail.port").toInt()
+
+        if (SSL_SMTP_PORT == port) {
+            System.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
+            System.setProperty("mail.smtp.socketFactory.fallback", "false")
+            System.setProperty("mail.smtp.ssl.enable", "true")
+        }
+
+        System.setProperty("mail.mime.splitlongparameters", "false")
 
         val email: HtmlEmail = HtmlEmail()
 
